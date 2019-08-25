@@ -38,7 +38,7 @@ export class HomeAssistantService {
         let auth;
         try {
             auth = await getAuth({
-                // hassUrl: environment.hassUrl,
+                hassUrl: environment.hassUrl,
                 saveTokens: this._saveTokens,
                 loadTokens: this._loadTokens,
             });
