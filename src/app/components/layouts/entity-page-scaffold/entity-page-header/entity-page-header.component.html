@@ -1,0 +1,12 @@
+<div class="left">
+    <h1 class="title">Home Dashboard</h1>
+    <div class="weather-row">
+        <span class="temp-value">{{ temperature$ | async }}</span>
+        <span class="temp-unit">°</span>
+        <div class="weather-status">
+            <span>{{ weatherLocation$ | async }}</span>
+            <span>{{ weatherState$ | async }}</span>
+        </div>
+    </div>
+</div>
+<div class="right"></div>

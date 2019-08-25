@@ -1,0 +1,24 @@
+@mixin noSelect() {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+@mixin pressable() {
+    @include noSelect();
+
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    cursor: pointer;
+
+    &:hover {
+        box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    &:active {
+        transform: translateY(2px);
+    }
+}

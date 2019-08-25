@@ -1,0 +1,43 @@
+:host {
+    margin-top: 78px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.title {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.grid-scroller {
+    margin: 0 -24px;
+    padding: 18px 24px;
+    width: calc(100% + 24px * 2);
+    overflow-x: auto;
+    display: flex;
+    flex-direction: row;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+.room-grid {
+    display: grid;
+    grid-gap: 12px;
+    grid-auto-flow: column;
+    grid-template-rows: 1fr 1fr;
+    //grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+
+    /deep/ & > app-room-tile {
+        min-width: 200px;
+    }
+}
+
+.scroll-pad {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+}

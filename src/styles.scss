@@ -1,1 +1,26 @@
-/* You can add global styles to this file, and also import other style files */
+@import 'fonts.scss';
+@import 'colors.scss';
+@import '../node_modules/eva-icons/style/eva-icons.css';
+
+* {
+    box-sizing: border-box;
+    font-family: 'SF Pro Text', sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+    font-family: 'SF Pro Display', sans-serif;
+    margin: 0;
+}
+
+html,
+body {
+    background: black;
+    margin: 0;
+    height: 100vh;
+    overflow: auto;
+    color: $color-text;
+}

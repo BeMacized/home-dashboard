@@ -1,0 +1,20 @@
+:host {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+
+    &.left {
+        transform: scale(0) translateX(-100%);
+        opacity: 0;
+    }
+    &.center {
+        transform: scale(1) translateX(0%);
+        opacity: 1;
+    }
+    &.right {
+        transform: scale(0) translateX(100%);
+        opacity: 0;
+    }
+}

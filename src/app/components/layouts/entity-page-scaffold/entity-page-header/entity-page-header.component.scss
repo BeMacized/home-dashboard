@@ -1,0 +1,41 @@
+@import 'colors.scss';
+
+:host {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-top: 36px;
+}
+
+.title {
+    font-size: 32px;
+    font-weight: 700;
+}
+
+.weather-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    .temp-value {
+        font-size: 28px;
+        font-weight: 700;
+    }
+
+    .temp-unit {
+        font-size: 28px;
+        font-weight: 500;
+        color: $color-text-dim;
+    }
+
+    .weather-status {
+        margin-left: 12px;
+        display: flex;
+        flex-direction: column;
+        color: $color-text-dim;
+        font-size: 12px;
+        font-weight: 500;
+        justify-content: center;
+    }
+}

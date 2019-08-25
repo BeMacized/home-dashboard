@@ -1,0 +1,22 @@
+:host {
+    margin-top: 78px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.title {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.entity-grid {
+    margin-top: 18px;
+    width: 100%;
+    display: grid;
+    grid-gap: 12px;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    grid-auto-rows: 1fr;
+}

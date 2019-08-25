@@ -1,0 +1,66 @@
+@import 'colors.scss';
+@import 'buttons.scss';
+
+.tile {
+    @include pressable();
+    background-color: white;
+    position: relative;
+    border-radius: 8px;
+    width: 100%;
+    height: 56px;
+    overflow: hidden;
+
+    &:after {
+        transition: all 0.25s ease;
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(210deg, black, lighten(black, 20%));
+        opacity: 0;
+    }
+
+    &:not(.active) {
+        &:after {
+            opacity: 0.5;
+        }
+    }
+
+    &.active {
+        .tile-icon,
+        .tile-content .text {
+            color: $color-accent;
+        }
+    }
+}
+
+.tile-icon {
+    color: #888;
+    transition: all 0.25s ease;
+    margin-right: 6px;
+}
+
+.tile-content {
+    display: flex;
+    position: absolute;
+    top: 0;
+    left: 0;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    padding: 12px;
+
+    .text {
+        font-size: 18px;
+        font-weight: 500;
+        width: 100%;
+        color: #666;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+}
