@@ -20,7 +20,7 @@ html,
 body {
     background: black;
     margin: 0;
-    height: 100vh;
-    overflow: auto;
+    overflow: hidden;
+    width: 100vw;
     color: $color-text;
 }

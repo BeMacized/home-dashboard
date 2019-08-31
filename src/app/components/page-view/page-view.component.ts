@@ -3,6 +3,7 @@ import {
     Component,
     ContentChild,
     ContentChildren,
+    HostBinding,
     Input,
     OnChanges,
     OnInit,
@@ -19,6 +20,7 @@ import { PageViewPageComponent } from './page-view-page/page-view-page.component
 export class PageViewComponent implements OnInit, AfterViewInit, OnChanges {
     @Input() index;
     @ContentChildren(PageViewPageComponent) children: QueryList<PageViewPageComponent>;
+    @HostBinding('style.min-height') height;
 
     constructor() {}
 
@@ -40,6 +42,7 @@ export class PageViewComponent implements OnInit, AfterViewInit, OnChanges {
                 else if (index > this.index) child.state = 1;
                 else child.state = 0;
             });
+            this.height = this.children.toArray()[this.index].elementRef.nativeElement.clientHeight + 'px';
         }, 0);
     }
 }

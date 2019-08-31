@@ -6,14 +6,24 @@ import {
     subscribeEntities,
     ERR_HASS_HOST_REQUIRED,
     AuthData,
-    HassEntities,
+    HassEntities as _HassEntities,
+    HassEntity as _HassEntity,
     HassServices,
     HassService,
     callService,
     Connection,
+    HassEntityBase,
 } from 'home-assistant-js-websocket';
 import { environment } from '../../environments/environment';
 import { BehaviorSubject, Observable } from 'rxjs';
+
+export declare type HassEntity = _HassEntity & {
+    features: string[];
+};
+
+export declare interface HassEntities {
+    [entity_id: string]: HassEntity;
+}
 
 @Injectable({
     providedIn: 'root',
@@ -21,7 +31,6 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export class HomeAssistantService {
     private connection: Connection;
     private entities$: BehaviorSubject<HassEntities> = new BehaviorSubject<HassEntities>({});
-    private services$: BehaviorSubject<HassServices> = new BehaviorSubject<HassServices>({});
 
     get entities(): Observable<HassEntities> {
         return this.entities$.asObservable();
@@ -31,6 +40,7 @@ export class HomeAssistantService {
 
     async callService(domain: string, service: string, payload: any) {
         if (!this.connection) return console.warn('Cannot call service as connection is null');
+        console.log('SERVICE CALL', domain, service, payload);
         await callService(this.connection, domain, service, payload);
     }
 
@@ -56,8 +66,7 @@ export class HomeAssistantService {
             }
         }
         this.connection = await createConnection({ auth });
-        subscribeEntities(this.connection, ent => this.entities$.next(ent));
-        subscribeServices(this.connection, services => this.services$.next(services));
+        subscribeEntities(this.connection, ent => this.entities$.next(this._parseSupportedFeatures(ent)));
     }
 
     _saveTokens = async (data: AuthData | null) => {
@@ -72,4 +81,29 @@ export class HomeAssistantService {
         const data = localStorage.getItem('HOME_DASH_HASS_AUTH');
         return data ? JSON.parse(data) : data;
     };
+
+    _parseSupportedFeatures(entities: _HassEntities): HassEntities {
+        function _parseEntity(entity: _HassEntity): HassEntity {
+            let features = [];
+            switch (entity.entity_id.split('.')[0]) {
+                case 'light':
+                    features = [
+                        'BRIGHTNESS',
+                        'COLOR_TEMP',
+                        'EFFECT',
+                        'FLASH',
+                        'COLOR',
+                        'TRANSITION',
+                        null,
+                        'WHITE_VALUE',
+                    ].filter((flag, index) => flag && entity.attributes.supported_features & (1 << index));
+                    break;
+            }
+            return Object.assign({ features }, entity);
+        }
+        return Object.keys(entities).reduce((acc, e) => {
+            acc[e] = _parseEntity(entities[e]);
+            return acc;
+        }, {});
+    }
 }

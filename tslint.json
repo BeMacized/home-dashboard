@@ -46,6 +46,7 @@
         "no-string-literal": false,
         "member-ordering": false,
         "curly": false,
-        "semicolon": false
+        "semicolon": false,
+        "no-bitwise": false
     }
 }

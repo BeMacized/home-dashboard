@@ -1,8 +1,7 @@
-<div class="tile" [class.active]="active$ | async" (click)="onClick()">
+<div class="tile" [class.active]="active$ | async">
     <div class="tile-content">
         <i class="eva eva-2x tile-icon" [ngClass]="'eva-' + (icon$ | async)"></i>
-        <span class="text">{{name$ | async}}</span>
-        <span class="value">{{value$ | async}}</span>
+        <span class="text">{{ name$ | async }}</span>
+        <span class="value">{{ value$ | async }}</span>
     </div>
 </div>
-

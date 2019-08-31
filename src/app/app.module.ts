@@ -1,4 +1,4 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, HAMMER_GESTURE_CONFIG, HammerGestureConfig } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -15,6 +15,8 @@ import { RoomTileComponent } from './components/room-tile/room-tile.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PageViewComponent } from './components/page-view/page-view.component';
 import { PageViewPageComponent } from './components/page-view/page-view-page/page-view-page.component';
+import { LightOverlayComponent } from './views/light-overlay/light-overlay.component';
+import { LightDimmerComponent } from './views/light-overlay/light-dimmer/light-dimmer.component';
 
 @NgModule({
     declarations: [
@@ -28,6 +30,8 @@ import { PageViewPageComponent } from './components/page-view/page-view-page/pag
         RoomTileComponent,
         PageViewComponent,
         PageViewPageComponent,
+        LightOverlayComponent,
+        LightDimmerComponent,
     ],
     imports: [
         BrowserModule,
@@ -35,7 +39,6 @@ import { PageViewPageComponent } from './components/page-view/page-view-page/pag
         AppRoutingModule,
         ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     ],
-    providers: [],
     bootstrap: [AppComponent],
 })
 export class AppModule {}

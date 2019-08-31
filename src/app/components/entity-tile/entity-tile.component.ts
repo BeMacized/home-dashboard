@@ -1,19 +1,22 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, OnInit } from '@angular/core';
 import { HassEntity } from 'home-assistant-js-websocket';
 import { HomeAssistantService } from '../../services/home-assistant.service';
-import { Observable } from 'rxjs';
-import { filter, map, share, take } from 'rxjs/operators';
+import { Observable, Subscription } from 'rxjs';
+import { filter, map, shareReplay } from 'rxjs/operators';
 import { TileBehavior } from './tile-behaviors/tile-behavior';
 import { DefaultBehavior } from './tile-behaviors/default-behavior';
 import { LightBehavior } from './tile-behaviors/light-behavior';
+import { LightOverlayService } from '../../services/light-overlay.service';
+import { HammerService } from '../../services/hammer.service';
 
 @Component({
     selector: 'app-entity-tile',
     templateUrl: './entity-tile.component.html',
     styleUrls: ['./entity-tile.component.scss'],
 })
-export class EntityTileComponent implements OnInit {
+export class EntityTileComponent implements OnInit, OnDestroy {
     @Input() entityId: string;
+    entitySubscription: Subscription;
     entity$: Observable<HassEntity>;
     active$: Observable<boolean>;
     name$: Observable<string>;
@@ -21,30 +24,46 @@ export class EntityTileComponent implements OnInit {
     icon$: Observable<string>;
     behavior: TileBehavior;
     type: string;
+    hammer: HammerManager;
 
-    constructor(private hass: HomeAssistantService) {}
+    constructor(
+        private hass: HomeAssistantService,
+        private lightOverlay: LightOverlayService,
+        private el: ElementRef,
+        private hs: HammerService
+    ) {}
 
     ngOnInit() {
+        // Create the behavior for this entity
         this.type = this.entityId.split('.')[0];
         this.behavior = this.createBehaviorForType(this.type);
+        // Get entity by its id
         this.entity$ = this.hass.entities.pipe(
             map(entities => entities[this.entityId]),
-            filter(e => !!e)
+            filter(e => !!e),
+            shareReplay(1)
         );
         this.name$ = this.entity$.pipe(map(e => this.behavior.getName(e)));
         this.value$ = this.entity$.pipe(map(e => this.behavior.getValue(e)));
         this.active$ = this.entity$.pipe(map(e => this.behavior.getActive(e)));
         this.icon$ = this.entity$.pipe(map(e => this.behavior.getIconName(e)));
+        // Listen for gestures
+        this.hammer = this.hs.create(this.el);
+        this.hammer.add(new this.hs.lib.Tap());
+        this.hammer.add(new this.hs.lib.Press());
+        this.hammer.on('tap', event => this.behavior.onTap(event, this.entity$));
+        this.hammer.on('press', event => this.behavior.onPress(event, this.entity$));
     }
 
-    onClick() {
-        this.entity$.pipe(take(1)).subscribe(entity => this.behavior.onTap(entity));
+    ngOnDestroy() {
+        this.entitySubscription.unsubscribe();
+        this.hammer.destroy();
     }
 
     createBehaviorForType(type: string) {
         switch (type) {
             case 'light':
-                return new LightBehavior(this.hass);
+                return new LightBehavior(this.hass, this.lightOverlay);
             default:
                 return new DefaultBehavior();
         }
