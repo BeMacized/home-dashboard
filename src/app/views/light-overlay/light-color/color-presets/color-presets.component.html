@@ -1,0 +1,9 @@
+<div class="content">
+    <div
+        class="preset"
+        *ngFor="let preset of presets"
+        [style.top]="preset.offsetY + 'px'"
+        [style.left]="preset.offsetX + 'px'"
+    ></div>
+    <!--    <div class="preset-button"></div>-->
+</div>

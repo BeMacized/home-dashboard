@@ -1,0 +1,43 @@
+:host {
+    position: relative;
+    width: 100%;
+    &:before {
+        content: '';
+        display: block;
+        padding-top: 100%;
+    }
+}
+
+.content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    line-height: 100%;
+    height: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: stretch;
+}
+
+.preset,
+.btn-edit {
+    position: absolute;
+    background-color: red;
+    border-radius: 99999999px;
+    width: 33.3333%;
+    &:before {
+        content: '';
+        display: block;
+        padding-top: 100%;
+    }
+}
+
+.preset {
+}
+
+.btn-edit {
+}

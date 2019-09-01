@@ -9,7 +9,7 @@ import { async } from 'rxjs/internal/scheduler/async';
 })
 export class LightOverlayService {
     entity$: Observable<HassEntity>;
-    showOverlay$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+    showOverlay$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
     constructor() {}
 
