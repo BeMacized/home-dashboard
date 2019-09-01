@@ -17,6 +17,7 @@ import { PageViewComponent } from './components/page-view/page-view.component';
 import { PageViewPageComponent } from './components/page-view/page-view-page/page-view-page.component';
 import { LightOverlayComponent } from './views/light-overlay/light-overlay.component';
 import { LightDimmerComponent } from './views/light-overlay/light-dimmer/light-dimmer.component';
+import { LightColorComponent } from './views/light-overlay/light-color/light-color.component';
 
 @NgModule({
     declarations: [
@@ -32,6 +33,7 @@ import { LightDimmerComponent } from './views/light-overlay/light-dimmer/light-d
         PageViewPageComponent,
         LightOverlayComponent,
         LightDimmerComponent,
+        LightColorComponent,
     ],
     imports: [
         BrowserModule,
