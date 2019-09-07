@@ -18,6 +18,7 @@
     background-position: center;
     background-image: url('/assets/bgs/bg1_blur.jpg');
     z-index: 0;
+    pointer-events: none;
 }
 
 .control-container {
@@ -29,6 +30,7 @@
     height: 100%;
     width: 100%;
     z-index: 1;
+    pointer-events: none;
 
     & > * {
         position: absolute;

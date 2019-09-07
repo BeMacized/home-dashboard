@@ -4,6 +4,7 @@ import { LightOverlayService } from '../../../services/light-overlay.service';
 import { HammerGesturesPlugin } from '@angular/platform-browser/src/dom/events/hammer_gestures';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
+import { EntityTileComponent } from '../entity-tile.component';
 
 export class LightBehavior extends TileBehavior {
     constructor(private hass: HomeAssistantService, private lightOverlay: LightOverlayService) {

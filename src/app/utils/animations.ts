@@ -1,9 +1,16 @@
-import { animate, query, stagger, style, transition, trigger } from '@angular/animations';
+import { animate, animateChild, group, query, stagger, style, transition, trigger } from '@angular/animations';
 
 export function fade(name = 'fade', length = '.15s ease') {
     return trigger(name, [
         transition(':enter', [style({ opacity: 0 }), animate(length)]),
         transition(':leave', [animate(length, style({ opacity: 0 }))]),
+    ]);
+}
+
+export function destroyDelay(length: '.5s', name = 'destroyDelay', childAnimation = '') {
+    return trigger(name, [
+        transition(':enter', [query(childAnimation, animateChild(), { optional: true }), animate(length)]),
+        transition(':leave', [query(childAnimation, animateChild(), { optional: true }), animate(length)]),
     ]);
 }
 

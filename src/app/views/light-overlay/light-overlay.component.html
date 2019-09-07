@@ -1,5 +1,5 @@
-<div class="overlay-bg"></div>
-<div class="control-container" (mousedown)="onMouseDown($event)" (mouseup)="onMouseUp($event)" #controlContainer>
-    <app-light-dimmer *ngIf="(lightOverlay.mode$ | async) === 'BRIGHTNESS'" [@fade]></app-light-dimmer>
-    <app-light-color *ngIf="(lightOverlay.mode$ | async) === 'COLOR'" [@fade]></app-light-color>
+<div class="overlay-bg" *ngIf="open" [@bgFade]></div>
+<div class="control-container" [ngStyle]="getStyle()" #controlContainer>
+    <app-light-dimmer *ngIf="(lightOverlay.mode$ | async) === 'BRIGHTNESS'" [@controlFade]></app-light-dimmer>
+    <app-light-color *ngIf="(lightOverlay.mode$ | async) === 'COLOR'" [@controlFade]></app-light-color>
 </div>

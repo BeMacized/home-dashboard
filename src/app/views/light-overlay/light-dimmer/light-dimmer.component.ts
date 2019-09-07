@@ -62,7 +62,7 @@ export class LightDimmerComponent implements OnInit, OnDestroy, AfterViewInit {
                     )
                 ),
                 // Only accept dim requests if the entity supports brightness
-                filter(ev => ev.entity.features.includes('BRIGHTNESS'))
+                filter(ev => ev.entity && ev.entity.features.includes('BRIGHTNESS'))
             )
             .subscribe(async ev => {
                 // Send dim request to HASS

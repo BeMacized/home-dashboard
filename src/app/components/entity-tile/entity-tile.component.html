@@ -1,4 +1,4 @@
-<div class="tile" [class.active]="active$ | async">
+<div class="tile" [class.active]="active$ | async" [attr.data-entity-id]="entityId">
     <div class="tile-content">
         <i class="eva eva-2x tile-icon" [ngClass]="'eva-' + (icon$ | async)"></i>
         <span class="text">{{ name$ | async }}</span>

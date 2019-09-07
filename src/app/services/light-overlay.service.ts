@@ -10,22 +10,27 @@ type LightOverlayMode = 'BRIGHTNESS' | 'COLOR';
     providedIn: 'root',
 })
 export class LightOverlayService {
-    entity$: Observable<HassEntity>;
+    private entitySubscription: Subscription;
+    entity$: BehaviorSubject<HassEntity> = new BehaviorSubject<HassEntity>(null);
     showOverlay$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     mode$: BehaviorSubject<LightOverlayMode> = new BehaviorSubject<LightOverlayMode>(null);
 
     constructor() {}
 
     open(entity$: Observable<HassEntity>) {
-        if (this.entity$) return console.error('Cannot open light overlay while already open');
+        if (this.showOverlay$.value) return console.error('Cannot open light overlay while already open');
         // Reference entity on class
-        this.entity$ = entity$;
-        this.entity$.pipe(take(1)).subscribe(entity => {
+        this.entitySubscription = entity$.subscribe(entity => this.entity$.next(entity));
+        entity$.pipe(take(1)).subscribe(entity => {
             // Set mode
+            console.log(entity.features);
             if (entity.features.includes('BRIGHTNESS')) {
                 this.mode$.next('BRIGHTNESS');
             } else if (entity.features.includes('COLOR') || entity.features.includes('COLOR_TEMP')) {
                 this.mode$.next('COLOR');
+            } else {
+                this.mode$.next(null);
+                return;
             }
             // Show the overlay
             this.showOverlay$.next(true);
@@ -33,7 +38,9 @@ export class LightOverlayService {
     }
 
     close() {
-        this.entity$ = null;
+        this.entitySubscription.unsubscribe();
+        this.entitySubscription = null;
+        this.entity$.next(null);
         this.showOverlay$.next(false);
     }
 }

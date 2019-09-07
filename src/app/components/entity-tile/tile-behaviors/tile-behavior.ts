@@ -1,5 +1,7 @@
 import { HassEntity } from 'home-assistant-js-websocket';
 import { Observable } from 'rxjs';
+import { EntityTileComponent } from '../entity-tile.component';
+import { ElementRef } from '@angular/core';
 
 export abstract class TileBehavior {
     getIconName(entity: HassEntity): string {
