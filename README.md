@@ -1,6 +1,8 @@
 # Home Dashboard
 
-This project is a smart home control dashboard written in Angular. It controls the smart home via home assistant.
+This project is a smart home control dashboard, heavily inspired by HomeKit, written in Angular.
+It is built on top of Home Assistant's API.
+
 It is currently not configurable as it is only meant to serve as my personal in home dashboard.
 
 <p float="left">
