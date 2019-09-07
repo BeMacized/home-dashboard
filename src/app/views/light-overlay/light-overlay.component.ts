@@ -1,4 +1,4 @@
-import { Component, HostBinding, OnInit } from '@angular/core';
+import { Component, HostBinding, OnInit, ViewChild } from '@angular/core';
 import { fade, zoomFade } from '../../utils/animations';
 import { LightOverlayService } from '../../services/light-overlay.service';
 import { Observable } from 'rxjs';
@@ -12,12 +12,15 @@ import { map } from 'rxjs/operators';
 })
 export class LightOverlayComponent implements OnInit {
     @HostBinding('@fade') bgFade;
+    @ViewChild('controlContainer') controlContainer;
 
     constructor(public lightOverlay: LightOverlayService) {}
 
     ngOnInit() {}
 
-    onClickBG() {
-        this.lightOverlay.close();
+    onClickBG(event) {
+        if (event.target === this.controlContainer.nativeElement) {
+            this.lightOverlay.close();
+        }
     }
 }

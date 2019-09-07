@@ -1,0 +1,17 @@
+@import 'colors.scss';
+
+:host {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+
+    .eva {
+        color: $color-bulb;
+    }
+
+    span {
+        margin-top: 10px;
+    }
+}

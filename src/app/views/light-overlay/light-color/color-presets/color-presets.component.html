@@ -1,9 +1,55 @@
 <div class="content">
-    <div
-        class="preset"
-        *ngFor="let preset of presets"
-        [style.top]="preset.offsetY + 'px'"
-        [style.left]="preset.offsetX + 'px'"
-    ></div>
-    <!--    <div class="preset-button"></div>-->
+    <div class="preset-col">
+        <div class="preset-container">
+            <app-color-preset
+                (click)="onPresetSelect(0)"
+                [active]="currentPreset === 0"
+                [color]="getDisplayColor(0)"
+            ></app-color-preset>
+        </div>
+        <div class="preset-container">
+            <app-color-preset
+                (click)="onPresetSelect(3)"
+                [active]="currentPreset === 3"
+                [color]="getDisplayColor(3)"
+            ></app-color-preset>
+        </div>
+    </div>
+    <div class="preset-col">
+        <div class="preset-container">
+            <app-color-preset
+                (click)="onPresetSelect(1)"
+                [active]="currentPreset === 1"
+                [color]="getDisplayColor(1)"
+            ></app-color-preset>
+        </div>
+        <div class="preset-container">
+            <div class="btn-edit" (click)="onEdit()">
+                <span>Edit</span>
+            </div>
+        </div>
+        <div class="preset-container">
+            <app-color-preset
+                (click)="onPresetSelect(4)"
+                [active]="currentPreset === 4"
+                [color]="getDisplayColor(4)"
+            ></app-color-preset>
+        </div>
+    </div>
+    <div class="preset-col">
+        <div class="preset-container">
+            <app-color-preset
+                (click)="onPresetSelect(2)"
+                [active]="currentPreset === 2"
+                [color]="getDisplayColor(2)"
+            ></app-color-preset>
+        </div>
+        <div class="preset-container">
+            <app-color-preset
+                (click)="onPresetSelect(5)"
+                [active]="currentPreset === 5"
+                [color]="getDisplayColor(5)"
+            ></app-color-preset>
+        </div>
+    </div>
 </div>

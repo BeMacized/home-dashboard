@@ -19,6 +19,8 @@ import { LightOverlayComponent } from './views/light-overlay/light-overlay.compo
 import { LightDimmerComponent } from './views/light-overlay/light-dimmer/light-dimmer.component';
 import { LightColorComponent } from './views/light-overlay/light-color/light-color.component';
 import { ColorPresetsComponent } from './views/light-overlay/light-color/color-presets/color-presets.component';
+import { LightOverlayHeaderComponent } from './views/light-overlay/light-overlay-header/light-overlay-header.component';
+import { ColorPresetComponent } from './views/light-overlay/light-color/color-presets/color-preset/color-preset.component';
 
 @NgModule({
     declarations: [
@@ -36,6 +38,8 @@ import { ColorPresetsComponent } from './views/light-overlay/light-color/color-p
         LightDimmerComponent,
         LightColorComponent,
         ColorPresetsComponent,
+        LightOverlayHeaderComponent,
+        ColorPresetComponent,
     ],
     imports: [
         BrowserModule,

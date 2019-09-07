@@ -1,1 +1,11 @@
+<app-light-overlay-header text="Colour"></app-light-overlay-header>
 <app-color-presets></app-color-presets>
+<div class="footer">
+    <div
+        class="btn btn-action"
+        (click)="lightOverlay.mode$.next('BRIGHTNESS')"
+        *ngIf="showBrightnessModeButton | async"
+    >
+        Brightness
+    </div>
+</div>

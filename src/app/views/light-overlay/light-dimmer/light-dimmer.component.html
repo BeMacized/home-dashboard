@@ -1,2 +1,10 @@
-<div class="dimmer-bg"></div>
-<div class="dimmer-fill" [style.height]="((brightness$ | async) * 100) + '%'"></div>
+<app-light-overlay-header [text]="headerText$ | async"></app-light-overlay-header>
+<div class="dimmer" #dimmer>
+    <div class="dimmer-bg"></div>
+    <div class="dimmer-fill" [style.height]="(brightness$ | async) * 100 + '%'"></div>
+</div>
+<div class="footer">
+    <div class="btn btn-action" (click)="lightOverlay.mode$.next('COLOR')" *ngIf="showColorModeButton | async">
+        Colour
+    </div>
+</div>

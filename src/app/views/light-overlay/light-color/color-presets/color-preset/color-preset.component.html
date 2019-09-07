@@ -1,0 +1,7 @@
+<svg width="100%" viewBox="0 0 100 100">
+    <mask id="holeMask">
+        <rect width="100%" height="100%" fill="#00FF00" />
+        <circle [attr.r]="active ? '20%' : '0%'" style="transition: r .25s ease" cx="50%" cy="50%" fill="#000000" />
+    </mask>
+    <circle cx="50%" cy="50%" r="50%" [attr.fill]="color" mask="url(#holeMask)" />
+</svg>

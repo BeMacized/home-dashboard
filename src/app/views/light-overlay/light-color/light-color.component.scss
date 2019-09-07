@@ -1,13 +1,32 @@
 @import 'shadows.scss';
+@import 'buttons.scss';
 
 :host {
     width: 100%;
     max-width: 300px;
-    overflow: hidden;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: stretch;
     position: relative;
-    @include shadow-2xl();
+    height: 100%;
+    pointer-events: none;
+
+    app-color-presets {
+        flex-shrink: 0;
+    }
+
+    app-light-overlay-header,
+    .footer {
+        flex: 1;
+    }
+
+    .footer {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: flex-end;
+        justify-content: space-around;
+        padding-bottom: 24px;
+    }
 }
