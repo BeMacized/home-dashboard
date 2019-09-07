@@ -24,6 +24,7 @@ export class LightOverlayComponent implements OnInit {
     }
 
     onMouseUp(event) {
+        // We check for mouse down, to prevent accidentally closing the overlay immediately after opening it.
         if (event.target === this.controlContainer.nativeElement && this.mouseDown) this.lightOverlay.close();
         this.mouseDown = false;
     }
