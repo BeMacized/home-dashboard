@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="100%">
+    <defs>
+        <mask id="holeMask">
+            <rect width="100%" height="100%" fill="white"/>
+            <circle r="16%" cx="50%" cy="50%" fill="black"/>
+        </mask>
+    </defs>
+    <circle cx="50%" cy="50%" r="50%" fill="white" mask="url(#holeMask)"/>
+</svg>

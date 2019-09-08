@@ -19,10 +19,10 @@ export class LightOverlayComponent implements OnInit, OnDestroy {
 
     @ViewChild('controlContainer') controlContainer;
     mouseDown = false;
+
     tileElement: Element;
+    style: { [p: string]: any } = {};
     open = false;
-    teleport = false;
-    entity_id;
 
     openSubscription: Subscription;
     entitySubscription: Subscription;
@@ -33,14 +33,18 @@ export class LightOverlayComponent implements OnInit, OnDestroy {
         this.entitySubscription = this.lightOverlay.entity$.pipe(filter(e => !!e)).subscribe(entity => {
             const query = document.querySelectorAll(`[data-entity-id="${entity.entity_id}"]`);
             this.tileElement = query.length ? query.item(0) : null;
-            if (this.entity_id !== entity.entity_id) {
-                this.teleport = true;
-                this.entity_id = entity.entity_id;
-            }
         });
-        this.openSubscription = this.lightOverlay.showOverlay$.subscribe(open => {
-            this.open = open;
-        });
+        this.openSubscription = this.lightOverlay.showOverlay$
+            .pipe(filter(open => open !== this.open))
+            .subscribe(open => {
+                this.open = open;
+                if (open) {
+                    this.refreshStyle(false, false);
+                    setTimeout(() => this.refreshStyle(true, true));
+                } else {
+                    setTimeout(() => this.refreshStyle(true, false));
+                }
+            });
     }
 
     ngOnDestroy() {
@@ -60,27 +64,25 @@ export class LightOverlayComponent implements OnInit, OnDestroy {
         this.mouseDown = false;
     }
 
-    getStyle(): { [p: string]: any } {
+    refreshStyle(animate: boolean, open: boolean) {
         let scaleX = 1;
         let scaleY = 1;
         let transX = 0;
         let transY = 0;
 
-        if (this.tileElement && (!this.open || this.teleport)) {
+        if (this.tileElement && !open) {
             const bounds = this.tileElement.getBoundingClientRect();
             transX = bounds.left - window.innerWidth / 2 + bounds.width / 2;
             transY = bounds.top - window.innerHeight / 2 + bounds.height / 2;
             scaleX = scaleY = Math.min(bounds.width / window.innerWidth, bounds.height / window.innerHeight);
         }
 
-        const style = {
-            opacity: this.open ? '1' : '0',
-            transition: `transform ${this.teleport ? '0s' : '.25s'} ease-in-out, opacity .25s ease-in-out`,
+        this.style = {
+            opacity: open ? '1' : '0',
+            transition: `transform ${animate ? '.25s' : '0s'} ease-in-out, opacity ${
+                animate ? '.25s' : '0s'
+            } ease-in-out`,
             transform: `translate(${transX}px, ${transY}px) scale(${scaleX}, ${scaleY})`,
         };
-
-        this.teleport = false;
-
-        return style;
     }
 }
