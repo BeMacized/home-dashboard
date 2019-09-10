@@ -1,4 +1,7 @@
 <div class="gradient">
-    <div class="gradient-l1"></div>
-    <div class="gradient-l2"></div>
+    <div class="gradient-l1" [style.background]="gradientBlobUrl"></div>
+    <div class="gradient-l2" [@fade] *ngIf="mode === 'COLOR'"></div>
+</div>
+<div class="btn-layer">
+    <div class="btn btn-done" (pressup)="done.emit()" (click)="done.emit()">Done</div>
 </div>

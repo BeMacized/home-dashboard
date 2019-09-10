@@ -4,7 +4,7 @@
     <div class="dimmer-fill" [style.height]="(brightness$ | async) * 100 + '%'"></div>
 </div>
 <div class="footer">
-    <div class="btn btn-action" (click)="lightOverlay.mode$.next('COLOR')" *ngIf="showColorModeButton | async">
+    <div class="btn btn-action" (click)="entityOverlay.mode$.next('COLOR')" *ngIf="showColorModeButton | async">
         Colour
     </div>
 </div>

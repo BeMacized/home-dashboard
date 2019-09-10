@@ -1,12 +1,12 @@
-import { Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, ElementRef, EventEmitter, OnInit, Output, QueryList, ViewChildren } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { LightOverlayService } from '../../../../services/light-overlay.service';
-import { take } from 'rxjs/operators';
+import { filter, take } from 'rxjs/operators';
 import { HassEntity, HomeAssistantService } from '../../../../services/home-assistant.service';
 import mired from 'mired';
 import colorTemp from 'color-temperature';
 import Color from 'color';
 import * as _ from 'lodash';
+import { EntityOverlayService } from '../../../../services/entity-overlay.service';
 
 const LS_KEY_PREFIX = 'LS_COLOR_PRESETS_';
 
@@ -30,47 +30,50 @@ type ColorPreset = ColorRGBPreset | ColorTempPreset;
 })
 export class ColorPresetsComponent implements OnInit {
     currentPreset;
-    presetValues: ColorPreset[];
+    presetValues: ColorPreset[] = [];
 
-    constructor(
-        private lightOverlay: LightOverlayService,
-        private hass: HomeAssistantService,
-        public sanitizer: DomSanitizer
-    ) {}
+    @Output() edit: EventEmitter<void> = new EventEmitter<void>();
+
+    constructor(private entityOverlay: EntityOverlayService, private hass: HomeAssistantService) {}
 
     ngOnInit() {
         // Load preset values
-        this.lightOverlay.entity$.pipe(take(1)).subscribe(entity => {
-            const rawValues = window.localStorage.getItem(LS_KEY_PREFIX + entity.entity_id);
-            if (!rawValues) {
-                // If none found, generate defaults
-                this.presetValues = this.generateDefaultPresets(entity);
-                this.savePresets(entity);
-            } else {
-                // Otherwise parse values
-                this.presetValues = JSON.parse(rawValues);
-            }
-            // Set active preset if a preset matches current state
-            this.presetValues.forEach((preset, presetIndex) => {
-                const rgbMatch =
-                    preset.type === 'RGB' &&
-                    _.isEqual(
-                        entity.attributes['rgb_color'],
-                        Color(preset.color)
-                            .rgb()
-                            .array()
-                    );
-                const tempMatch = preset.type === 'TEMP' && entity.attributes['color_temp'] === preset.mireds;
-                if (rgbMatch || tempMatch) {
-                    this.currentPreset = presetIndex;
+        this.entityOverlay.entity$
+            .pipe(
+                filter(e => !!e),
+                take(1)
+            )
+            .subscribe(entity => {
+                const rawValues = window.localStorage.getItem(LS_KEY_PREFIX + entity.entity_id);
+                if (!rawValues) {
+                    // If none found, generate defaults
+                    this.presetValues = this.generateDefaultPresets(entity);
+                    this.savePresets(entity);
+                } else {
+                    // Otherwise parse values
+                    this.presetValues = JSON.parse(rawValues);
                 }
+                // Set active preset if a preset matches current state
+                this.presetValues.forEach((preset, presetIndex) => {
+                    const rgbMatch =
+                        preset.type === 'RGB' &&
+                        _.isEqual(
+                            entity.attributes['rgb_color'],
+                            Color(preset.color)
+                                .rgb()
+                                .array()
+                        );
+                    const tempMatch = preset.type === 'TEMP' && entity.attributes['color_temp'] === preset.mireds;
+                    if (rgbMatch || tempMatch) {
+                        this.currentPreset = presetIndex;
+                    }
+                });
             });
-        });
     }
 
     getDisplayColor(presetIndex: number) {
+        if (this.presetValues.length <= presetIndex) return '#00000000';
         const preset = this.presetValues[presetIndex];
-        if (!preset) return '#00000000';
         let color;
         switch (preset.type) {
             case 'RGB':
@@ -94,7 +97,7 @@ export class ColorPresetsComponent implements OnInit {
 
     onPresetSelect(presetIndex: number) {
         // If already selected, deselect
-        if (this.currentPreset === presetIndex) {
+        if (!this.presetValues || this.currentPreset === presetIndex) {
             this.currentPreset = null;
             return;
         }
@@ -116,12 +119,14 @@ export class ColorPresetsComponent implements OnInit {
                 break;
         }
         // Send color change to HASS
-        this.lightOverlay.entity$.pipe(take(1)).subscribe(entity => {
+        this.entityOverlay.entity$.pipe(take(1)).subscribe(entity => {
             this.hass.callService('light', 'turn_on', Object.assign({ entity_id: entity.entity_id }, data));
         });
     }
 
-    onEdit() {}
+    onEdit() {
+        this.edit.emit();
+    }
 
     savePresets(entity: HassEntity) {
         window.localStorage.setItem(LS_KEY_PREFIX + entity.entity_id, JSON.stringify(this.presetValues));

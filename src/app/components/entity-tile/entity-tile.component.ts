@@ -6,8 +6,8 @@ import { filter, map, shareReplay } from 'rxjs/operators';
 import { TileBehavior } from './tile-behaviors/tile-behavior';
 import { DefaultBehavior } from './tile-behaviors/default-behavior';
 import { LightBehavior } from './tile-behaviors/light-behavior';
-import { LightOverlayService } from '../../services/light-overlay.service';
 import { HammerService } from '../../services/hammer.service';
+import { EntityOverlayService } from '../../services/entity-overlay.service';
 
 @Component({
     selector: 'app-entity-tile',
@@ -28,7 +28,7 @@ export class EntityTileComponent implements OnInit, OnDestroy {
 
     constructor(
         private hass: HomeAssistantService,
-        private lightOverlay: LightOverlayService,
+        private entityOverlay: EntityOverlayService,
         private el: ElementRef,
         private hs: HammerService
     ) {}
@@ -63,7 +63,7 @@ export class EntityTileComponent implements OnInit, OnDestroy {
     createBehaviorForType(type: string) {
         switch (type) {
             case 'light':
-                return new LightBehavior(this.hass, this.lightOverlay);
+                return new LightBehavior(this.hass, this.entityOverlay);
             default:
                 return new DefaultBehavior();
         }

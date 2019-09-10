@@ -9,7 +9,7 @@ type LightOverlayMode = 'BRIGHTNESS' | 'COLOR';
 @Injectable({
     providedIn: 'root',
 })
-export class LightOverlayService {
+export class EntityOverlayService {
     private entitySubscription: Subscription;
     entity$: BehaviorSubject<HassEntity> = new BehaviorSubject<HassEntity>(null);
     showOverlay$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -23,9 +23,9 @@ export class LightOverlayService {
         this.entitySubscription = entity$.subscribe(entity => this.entity$.next(entity));
         entity$.pipe(take(1)).subscribe(entity => {
             // Set mode
-            console.log(entity.features);
             if (entity.features.includes('BRIGHTNESS')) {
-                this.mode$.next('BRIGHTNESS');
+                // this.mode$.next('BRIGHTNESS');
+                this.mode$.next('COLOR');
             } else if (entity.features.includes('COLOR') || entity.features.includes('COLOR_TEMP')) {
                 this.mode$.next('COLOR');
             } else {

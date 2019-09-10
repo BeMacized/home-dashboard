@@ -21,10 +21,17 @@ export function fadeUp(name = 'fadeUp', length = '.15s ease') {
     ]);
 }
 
-export function zoomFade(name = 'zoomFade', length = '.5s ease') {
+export function zoomFadeShrink(name = 'zoomFadeShrink', length = '.5s ease') {
     return trigger(name, [
         transition(':enter', [style({ opacity: 0, transform: 'scale(0)' }), animate(length)]),
         transition(':leave', [animate(length, style({ opacity: 0, transform: 'scale(0)' }))]),
+    ]);
+}
+
+export function zoomFadeGrow(name = 'zoomFadeGrow', length = '.5s ease') {
+    return trigger(name, [
+        transition(':enter', [style({ opacity: 0, transform: 'scale(2)' }), animate(length)]),
+        transition(':leave', [animate(length, style({ opacity: 0, transform: 'scale(2)' }))]),
     ]);
 }
 

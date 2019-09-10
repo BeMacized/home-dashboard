@@ -1,5 +1,0 @@
-<div class="overlay-bg" *ngIf="open" [@bgFade]></div>
-<div class="control-container" [ngStyle]="style" #controlContainer>
-    <app-light-dimmer *ngIf="(lightOverlay.mode$ | async) === 'BRIGHTNESS'" [@controlFade]></app-light-dimmer>
-    <app-light-color *ngIf="(lightOverlay.mode$ | async) === 'COLOR'" [@controlFade]></app-light-color>
-</div>

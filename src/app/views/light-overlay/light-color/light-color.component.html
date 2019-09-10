@@ -1,11 +1,38 @@
-<app-light-overlay-header text="Colour"></app-light-overlay-header>
-<app-color-presets></app-color-presets>
-<div class="footer">
-    <div
-        class="btn btn-action"
-        (click)="lightOverlay.mode$.next('BRIGHTNESS')"
-        *ngIf="showBrightnessModeButton | async"
-    >
-        Brightness
+<div class="mode mode-presets" *ngIf="mode === 'PRESETS'" [@zoomFadeShrink]>
+    <app-light-overlay-header text="Colour"></app-light-overlay-header>
+    <app-color-presets (edit)="onEdit()"></app-color-presets>
+    <app-color-editor
+        (done)="onDone()"
+        *ngIf="mode === 'EDIT'"
+        [mode]="editMode"
+        [miredsMin]="(entityOverlay.entity$ | async)?.attributes?.min_mireds"
+        [miredsMax]="(entityOverlay.entity$ | async)?.attributes?.max_mireds"
+    ></app-color-editor>
+    <div class="footer">
+        <div
+            class="btn btn-action"
+            (click)="entityOverlay.mode$.next('BRIGHTNESS')"
+            *ngIf="showBrightnessModeButton | async"
+        >
+            Brightness
+        </div>
+    </div>
+</div>
+<div class="mode mode-edit" *ngIf="mode === 'EDIT'" [@zoomFadeGrow]>
+    <app-light-overlay-header text="Colour"></app-light-overlay-header>
+    <app-color-editor
+        (done)="onDone()"
+        [mode]="editMode"
+        [miredsMin]="(entityOverlay.entity$ | async)?.attributes?.min_mireds"
+        [miredsMax]="(entityOverlay.entity$ | async)?.attributes?.max_mireds"
+    ></app-color-editor>
+    <div class="footer">
+        <div
+            class="btn btn-action"
+            (click)="entityOverlay.mode$.next('BRIGHTNESS')"
+            *ngIf="showBrightnessModeButton | async"
+        >
+            Brightness
+        </div>
     </div>
 </div>

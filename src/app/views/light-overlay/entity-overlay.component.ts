@@ -1,18 +1,18 @@
 /* tslint:disable:prefer-const */
 import { Component, ElementRef, HostBinding, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { destroyDelay, fade, zoomFade } from '../../utils/animations';
-import { LightOverlayService } from '../../services/light-overlay.service';
+import { fade,  } from '../../utils/animations';
 import { Observable, Subscription } from 'rxjs';
 import { filter, map, take } from 'rxjs/operators';
 import { DomSanitizer } from '@angular/platform-browser';
+import { EntityOverlayService } from '../../services/entity-overlay.service';
 
 @Component({
-    selector: 'app-light-overlay',
-    templateUrl: './light-overlay.component.html',
-    styleUrls: ['./light-overlay.component.scss'],
+    selector: 'app-entity-overlay',
+    templateUrl: './entity-overlay.component.html',
+    styleUrls: ['./entity-overlay.component.scss'],
     animations: [fade('controlFade', '.25s ease'), fade('bgFade', '.5s ease')],
 })
-export class LightOverlayComponent implements OnInit, OnDestroy {
+export class EntityOverlayComponent implements OnInit, OnDestroy {
     @HostBinding('style.pointer-events') get pointerEvents() {
         return this.open ? 'auto' : 'none';
     }
@@ -27,14 +27,14 @@ export class LightOverlayComponent implements OnInit, OnDestroy {
     openSubscription: Subscription;
     entitySubscription: Subscription;
 
-    constructor(private el: ElementRef, public lightOverlay: LightOverlayService, private sanitizer: DomSanitizer) {}
+    constructor(private el: ElementRef, public entityOverlay: EntityOverlayService, private sanitizer: DomSanitizer) {}
 
     ngOnInit() {
-        this.entitySubscription = this.lightOverlay.entity$.pipe(filter(e => !!e)).subscribe(entity => {
+        this.entitySubscription = this.entityOverlay.entity$.pipe(filter(e => !!e)).subscribe(entity => {
             const query = document.querySelectorAll(`[data-entity-id="${entity.entity_id}"]`);
             this.tileElement = query.length ? query.item(0) : null;
         });
-        this.openSubscription = this.lightOverlay.showOverlay$
+        this.openSubscription = this.entityOverlay.showOverlay$
             .pipe(filter(open => open !== this.open))
             .subscribe(open => {
                 this.open = open;
@@ -60,7 +60,7 @@ export class LightOverlayComponent implements OnInit, OnDestroy {
     @HostListener('mouseup', ['$event'])
     onMouseUp(event) {
         // We check for mouse down, to prevent accidentally closing the overlay immediately after opening it.
-        if (event.target === this.el.nativeElement && this.mouseDown) this.lightOverlay.close();
+        if (event.target === this.el.nativeElement && this.mouseDown) this.entityOverlay.close();
         this.mouseDown = false;
     }
 

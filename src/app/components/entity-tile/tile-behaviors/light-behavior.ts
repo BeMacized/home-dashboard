@@ -1,13 +1,13 @@
 import { TileBehavior } from './tile-behavior';
 import { HassEntity, HomeAssistantService } from '../../../services/home-assistant.service';
-import { LightOverlayService } from '../../../services/light-overlay.service';
 import { HammerGesturesPlugin } from '@angular/platform-browser/src/dom/events/hammer_gestures';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { EntityTileComponent } from '../entity-tile.component';
+import { EntityOverlayService } from '../../../services/entity-overlay.service';
 
 export class LightBehavior extends TileBehavior {
-    constructor(private hass: HomeAssistantService, private lightOverlay: LightOverlayService) {
+    constructor(private hass: HomeAssistantService, private entityOverlay: EntityOverlayService) {
         super();
     }
 
@@ -37,6 +37,6 @@ export class LightBehavior extends TileBehavior {
 
     onPress($event: HammerInput, entity: Observable<HassEntity>) {
         $event.srcEvent.preventDefault();
-        this.lightOverlay.open(entity);
+        this.entityOverlay.open(entity);
     }
 }

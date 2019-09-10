@@ -15,7 +15,7 @@ import { RoomTileComponent } from './components/room-tile/room-tile.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PageViewComponent } from './components/page-view/page-view.component';
 import { PageViewPageComponent } from './components/page-view/page-view-page/page-view-page.component';
-import { LightOverlayComponent } from './views/light-overlay/light-overlay.component';
+import { EntityOverlayComponent } from './views/light-overlay/entity-overlay.component';
 import { LightDimmerComponent } from './views/light-overlay/light-dimmer/light-dimmer.component';
 import { LightColorComponent } from './views/light-overlay/light-color/light-color.component';
 import { ColorPresetsComponent } from './views/light-overlay/light-color/color-presets/color-presets.component';
@@ -35,7 +35,7 @@ import { ColorEditorComponent } from './views/light-overlay/light-color/color-ed
         RoomTileComponent,
         PageViewComponent,
         PageViewPageComponent,
-        LightOverlayComponent,
+        EntityOverlayComponent,
         LightDimmerComponent,
         LightColorComponent,
         ColorPresetsComponent,
