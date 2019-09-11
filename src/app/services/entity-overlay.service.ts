@@ -24,8 +24,7 @@ export class EntityOverlayService {
         entity$.pipe(take(1)).subscribe(entity => {
             // Set mode
             if (entity.features.includes('BRIGHTNESS')) {
-                // this.mode$.next('BRIGHTNESS');
-                this.mode$.next('COLOR');
+                this.mode$.next('BRIGHTNESS');
             } else if (entity.features.includes('COLOR') || entity.features.includes('COLOR_TEMP')) {
                 this.mode$.next('COLOR');
             } else {

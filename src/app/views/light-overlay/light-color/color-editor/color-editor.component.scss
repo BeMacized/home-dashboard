@@ -13,8 +13,9 @@
 
 .btn-layer,
 .gradient,
-.gradient-l1,
-.gradient-l2 {
+.gradient-color,
+.gradient-color-w,
+.gradient-color-temp {
     position: absolute;
     top: 0;
     left: 0;
@@ -25,11 +26,8 @@
 .gradient {
     mask-image: url(/assets/masks/color_picker_mask.svg);
 
-    .gradient-l1 {
-    }
-
-    .gradient-l2 {
-        background: radial-gradient(closest-side, #ffff 0%, #ffff 30%, #fff0 100%);
+    .gradient-color-w {
+        background: radial-gradient(closest-side, #ffff 30%, #fff0 100%);
     }
 }
 
