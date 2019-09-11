@@ -1,12 +1,13 @@
-import { Component, ElementRef, EventEmitter, OnInit, Output, QueryList, ViewChildren } from '@angular/core';
+import { Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, QueryList, ViewChildren } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { filter, take } from 'rxjs/operators';
+import { filter, take, tap } from 'rxjs/operators';
 import { HassEntity, HomeAssistantService } from '../../../../services/home-assistant.service';
 import mired from 'mired';
 import colorTemp from 'color-temperature';
 import Color from 'color';
 import * as _ from 'lodash';
 import { EntityOverlayService } from '../../../../services/entity-overlay.service';
+import { Subscription } from 'rxjs';
 
 const LS_KEY_PREFIX = 'LS_COLOR_PRESETS_';
 
@@ -28,9 +29,11 @@ type ColorPreset = ColorRGBPreset | ColorTempPreset;
     styleUrls: ['./color-presets.component.scss'],
     animations: [],
 })
-export class ColorPresetsComponent implements OnInit {
+export class ColorPresetsComponent implements OnInit, OnDestroy {
     currentPreset;
     presetValues: ColorPreset[] = [];
+    entitySubscription: Subscription;
+    currentEntityId: string;
 
     @Output() edit: EventEmitter<void> = new EventEmitter<void>();
 
@@ -38,10 +41,11 @@ export class ColorPresetsComponent implements OnInit {
 
     ngOnInit() {
         // Load preset values
-        this.entityOverlay.entity$
+        this.entitySubscription = this.entityOverlay.entity$
             .pipe(
                 filter(e => !!e),
-                take(1)
+                filter(e => e.entity_id !== this.currentEntityId),
+                tap(e => (this.currentEntityId = e.entity_id))
             )
             .subscribe(entity => {
                 const rawValues = window.localStorage.getItem(LS_KEY_PREFIX + entity.entity_id);
@@ -69,6 +73,10 @@ export class ColorPresetsComponent implements OnInit {
                     }
                 });
             });
+    }
+
+    ngOnDestroy() {
+        this.entitySubscription.unsubscribe();
     }
 
     getDisplayColor(presetIndex: number) {
