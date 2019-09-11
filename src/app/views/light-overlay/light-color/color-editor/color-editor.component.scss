@@ -1,4 +1,5 @@
 @import 'buttons.scss';
+@import 'shadows.scss';
 
 :host {
     display: block;
@@ -12,6 +13,7 @@
 }
 
 .btn-layer,
+.picker-layer,
 .gradient,
 .gradient-color,
 .gradient-color-w,
@@ -25,6 +27,7 @@
 
 .gradient {
     mask-image: url(/assets/masks/color_picker_mask.svg);
+    pointer-events: auto;
 
     .gradient-color-w {
         background: radial-gradient(closest-side, #ffff 30%, #fff0 100%);
@@ -48,4 +51,21 @@
     align-items: center;
     font-weight: bold;
     color: #fff;
+}
+
+.picker {
+    position: absolute;
+    width: 10%;
+    display: block;
+    border-radius: 99999999px;
+    background: #f00;
+    border: 2px white solid;
+    @include shadow-lg();
+    transform: translate(-50%, -50%);
+
+    &:before {
+        content: '';
+        display: block;
+        padding-top: 100%;
+    }
 }

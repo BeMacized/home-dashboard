@@ -1,11 +1,23 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import {
+    AfterViewInit,
+    Component,
+    EventEmitter,
+    Input,
+    OnChanges,
+    OnDestroy,
+    OnInit,
+    Output,
+    ViewChild,
+    ViewEncapsulation,
+} from '@angular/core';
 import 'conic-gradient';
 import { DomSanitizer } from '@angular/platform-browser';
 import { fade } from '../../../../utils/animations';
-
+import { DIRECTION_ALL } from 'hammerjs';
 import mired from 'mired';
 import colorTemp from 'color-temperature';
 import Color from 'color';
+import { HammerService } from '../../../../services/hammer.service';
 
 @Component({
     selector: 'app-color-editor',
@@ -13,20 +25,27 @@ import Color from 'color';
     styleUrls: ['./color-editor.component.scss'],
     animations: [fade('fade', '.5s ease')],
 })
-export class ColorEditorComponent implements OnInit, OnChanges {
-    mode: 'COLOR' | 'TEMP';
-    @Input('mode') set _mode(v: 'COLOR' | 'TEMP') {
-        this.mode = v;
-    }
+export class ColorEditorComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
+    // I/O
+    @Input() mode: 'COLOR' | 'TEMP';
     @Input() miredsMin: number;
     @Input() miredsMax: number;
-
     @Output() done: EventEmitter<void> = new EventEmitter<void>();
 
+    // Gesture
+    @ViewChild('gradientArea') gradientAreaEl;
+    hammer: HammerManager;
+
+    // Gradient
     colorGradient;
     tempGradient;
     tempStops: string;
-    constructor(private sanitizer: DomSanitizer) {}
+
+    // Picker
+    pickerTop = 0;
+    pickerLeft = 0;
+
+    constructor(private sanitizer: DomSanitizer, private hs: HammerService) {}
 
     ngOnInit() {
         this.colorGradient = this.sanitizer.bypassSecurityTrustStyle(
@@ -55,5 +74,25 @@ export class ColorEditorComponent implements OnInit, OnChanges {
                 'url(' + new (window as any).ConicGradient({ stops: this.tempStops }).blobURL + ')'
             );
         }
+    }
+
+    ngAfterViewInit() {
+        // Listen for gestures
+        this.hammer = this.hs.create(this.gradientAreaEl);
+        this.hammer.get('pan').set({ direction: DIRECTION_ALL, threshold: 1 });
+        this.hammer.on('pan', event => this.onPick(event));
+        this.hammer.on('tap', event => this.onPick(event));
+    }
+
+    ngOnDestroy() {
+        this.hammer.destroy();
+    }
+
+    onPick(event: HammerInput) {
+        const area: ClientRect = this.gradientAreaEl.nativeElement.getBoundingClientRect();
+        this.pickerTop = Math.max(0, Math.min(event.center.y - area.top, area.height));
+        this.pickerLeft = Math.max(0, Math.min(event.center.x - area.left, area.width));
+        // TODO: LIMIT POSITION WITH POLAR COORDINATES
+        // TODO: CALCULATE COLOR
     }
 }
