@@ -90,9 +90,29 @@ export class ColorEditorComponent implements OnInit, OnChanges, AfterViewInit, O
 
     onPick(event: HammerInput) {
         const area: ClientRect = this.gradientAreaEl.nativeElement.getBoundingClientRect();
-        this.pickerTop = Math.max(0, Math.min(event.center.y - area.top, area.height));
-        this.pickerLeft = Math.max(0, Math.min(event.center.x - area.left, area.width));
-        // TODO: LIMIT POSITION WITH POLAR COORDINATES
+        const cursorY = Math.max(0, Math.min(event.center.y - area.top, area.height));
+        const cursorX = Math.max(0, Math.min(event.center.x - area.left, area.width));
+
+        // Keep picker within bounds
+        {
+            let normalY = cursorY - area.height / 2;
+            let normalX = cursorX - area.width / 2;
+
+            const distance = Math.sqrt(Math.pow(normalX, 2) + Math.pow(normalY, 2));
+            const maxDistance = area.width / 2;
+            const minDistance = area.width / 6;
+
+            if (distance > maxDistance) {
+                normalY *= maxDistance / distance;
+                normalX *= maxDistance / distance;
+            } else if (distance < minDistance) {
+                normalY *= minDistance / distance;
+                normalX *= minDistance / distance;
+            }
+
+            this.pickerTop = normalY + area.height / 2;
+            this.pickerLeft = normalX + area.width / 2;
+        }
         // TODO: CALCULATE COLOR
     }
 }
