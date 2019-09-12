@@ -44,6 +44,7 @@ export class ColorEditorComponent implements OnInit, OnChanges, AfterViewInit, O
     // Picker
     pickerTop = 0;
     pickerLeft = 0;
+    pickerColor;
 
     constructor(private sanitizer: DomSanitizer, private hs: HammerService) {}
 
@@ -93,26 +94,35 @@ export class ColorEditorComponent implements OnInit, OnChanges, AfterViewInit, O
         const cursorY = Math.max(0, Math.min(event.center.y - area.top, area.height));
         const cursorX = Math.max(0, Math.min(event.center.x - area.left, area.width));
 
-        // Keep picker within bounds
-        {
-            let normalY = cursorY - area.height / 2;
-            let normalX = cursorX - area.width / 2;
+        const centerX = area.width / 2;
+        const centerY = area.width / 2;
 
-            const distance = Math.sqrt(Math.pow(normalX, 2) + Math.pow(normalY, 2));
-            const maxDistance = area.width / 2;
-            const minDistance = area.width / 6;
+        let normalY = cursorY - centerY;
+        let normalX = cursorX - centerX;
 
-            if (distance > maxDistance) {
-                normalY *= maxDistance / distance;
-                normalX *= maxDistance / distance;
-            } else if (distance < minDistance) {
-                normalY *= minDistance / distance;
-                normalX *= minDistance / distance;
-            }
+        const distance = Math.sqrt(Math.pow(normalX, 2) + Math.pow(normalY, 2));
+        const maxDistance = area.width / 2;
+        const minDistance = area.width / 6;
 
-            this.pickerTop = normalY + area.height / 2;
-            this.pickerLeft = normalX + area.width / 2;
+        if (distance > maxDistance) {
+            normalY *= maxDistance / distance;
+            normalX *= maxDistance / distance;
+        } else if (distance < minDistance) {
+            normalY *= minDistance / distance;
+            normalX *= minDistance / distance;
         }
-        // TODO: CALCULATE COLOR
+
+        const pickerY = normalY + centerY;
+        const pickerX = normalX + centerX;
+
+        const hue = (Math.round((Math.atan2(pickerY - centerX, pickerX - centerY) * 180) / Math.PI) % 360) + 90;
+        const lightness = Math.max(
+            50,
+            Math.min(100, 100 - Math.round(((distance - minDistance) / (maxDistance - minDistance)) * 50))
+        );
+
+        this.pickerColor = `hsl(${hue}, 100%, ${lightness}%)`;
+        this.pickerTop = pickerY;
+        this.pickerLeft = pickerX;
     }
 }
