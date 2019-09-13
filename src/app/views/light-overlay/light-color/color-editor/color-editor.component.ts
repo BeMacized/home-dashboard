@@ -7,6 +7,7 @@ import {
     OnDestroy,
     OnInit,
     Output,
+    SimpleChanges,
     ViewChild,
     ViewEncapsulation,
 } from '@angular/core';
@@ -19,6 +20,18 @@ import colorTemp from 'color-temperature';
 import Color from 'color';
 import { HammerService } from '../../../../services/hammer.service';
 
+type ColorEditorValue = ColorEditorColorValue | ColorEditorTempValue;
+
+interface ColorEditorColorValue {
+    type: 'COLOR';
+    color: string;
+}
+
+interface ColorEditorTempValue {
+    type: 'TEMP';
+    mireds: number;
+}
+
 @Component({
     selector: 'app-color-editor',
     templateUrl: './color-editor.component.html',
@@ -30,7 +43,7 @@ export class ColorEditorComponent implements OnInit, OnChanges, AfterViewInit, O
     @Input() mode: 'COLOR' | 'TEMP';
     @Input() miredsMin: number;
     @Input() miredsMax: number;
-    @Output() done: EventEmitter<void> = new EventEmitter<void>();
+    @Output() done: EventEmitter<ColorEditorValue> = new EventEmitter<ColorEditorValue>();
 
     // Gesture
     @ViewChild('gradientArea') gradientAreaEl;
@@ -46,9 +59,11 @@ export class ColorEditorComponent implements OnInit, OnChanges, AfterViewInit, O
     pickerLeft = 0;
     pickerColor;
 
+    value: ColorEditorValue;
+
     constructor(private sanitizer: DomSanitizer, private hs: HammerService) {}
 
-    ngOnInit() {
+    async ngOnInit() {
         this.colorGradient = this.sanitizer.bypassSecurityTrustStyle(
             'url(' +
                 new (window as any).ConicGradient({ stops: '#f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00' }).blobURL +
@@ -56,8 +71,15 @@ export class ColorEditorComponent implements OnInit, OnChanges, AfterViewInit, O
         );
     }
 
-    ngOnChanges() {
+    async ngOnChanges(changes: SimpleChanges) {
         if (!this.miredsMin || !this.miredsMax) return;
+        if (
+            changes.miredsMin &&
+            changes.miredsMax &&
+            changes.miredsMin.previousValue === changes.miredsMin.currentValue &&
+            changes.miredsMax.previousValue === changes.miredsMax.currentValue
+        )
+            return;
         const count = 5;
         const rawStops = new Array(count).fill(null).map((_, i) => {
             const mireds = ((count - i - 1) / (count - 1)) * (this.miredsMax - this.miredsMin) + this.miredsMin;
@@ -115,13 +137,19 @@ export class ColorEditorComponent implements OnInit, OnChanges, AfterViewInit, O
         const pickerY = normalY + centerY;
         const pickerX = normalX + centerX;
 
-        const hue = (Math.round((Math.atan2(pickerY - centerX, pickerX - centerY) * 180) / Math.PI) % 360) + 90;
-        const lightness = Math.max(
-            50,
-            Math.min(100, 100 - Math.round(((distance - minDistance) / (maxDistance - minDistance)) * 50))
-        );
+        switch (this.mode) {
+            case 'COLOR':
+                const hue = (Math.round((Math.atan2(pickerY - centerX, pickerX - centerY) * 180) / Math.PI) % 360) + 90;
+                const lightness = Math.max(
+                    50,
+                    Math.min(100, 100 - Math.round(((distance - minDistance) / (maxDistance - minDistance)) * 50))
+                );
+                this.pickerColor = `hsl(${hue}, 100%, ${lightness}%)`;
+                break;
+            case 'TEMP':
+                break;
+        }
 
-        this.pickerColor = `hsl(${hue}, 100%, ${lightness}%)`;
         this.pickerTop = pickerY;
         this.pickerLeft = pickerX;
     }

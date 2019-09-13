@@ -7,5 +7,5 @@
     <div class="picker" [style.top]="pickerTop + 'px'" [style.left]="pickerLeft + 'px'" [style.background-color]="pickerColor" *ngIf="pickerColor"></div>
 </div>
 <div class="btn-layer">
-    <div class="btn btn-done" (pressup)="done.emit()" (click)="done.emit()">Done</div>
+    <div class="btn btn-done" (click)="done.emit()">Done</div>
 </div>

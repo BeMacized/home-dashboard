@@ -60,7 +60,8 @@
     border-radius: 99999999px;
     border: 2px white solid;
     @include shadow-lg();
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) translateZ(0);
+    transition: top 0.1s ease, left 0.1s ease;
 
     &:before {
         content: '';
