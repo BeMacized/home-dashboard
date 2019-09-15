@@ -1,6 +1,6 @@
 /* tslint:disable:prefer-const */
 import { Component, ElementRef, HostBinding, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { fade,  } from '../../utils/animations';
+import { fade } from '../../utils/animations';
 import { Observable, Subscription } from 'rxjs';
 import { filter, map, take } from 'rxjs/operators';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -50,6 +50,11 @@ export class EntityOverlayComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         this.openSubscription.unsubscribe();
         this.entitySubscription.unsubscribe();
+    }
+
+    @HostListener('document:keydown.escape', ['$event'])
+    onKeydownHandler(event: KeyboardEvent) {
+        this.entityOverlay.close();
     }
 
     @HostListener('mousedown', ['$event'])

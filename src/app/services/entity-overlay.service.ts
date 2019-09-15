@@ -48,6 +48,7 @@ export class EntityOverlayService {
     }
 
     close() {
+        if (!this.showOverlay$.value) return;
         for (const handler of this.closeHandlers) {
             if (!handler()) return;
         }
