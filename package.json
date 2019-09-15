@@ -64,8 +64,7 @@
         "start": "ng serve --host 0.0.0.0 --disable-host-check",
         "start:prod": "docker-compose up --build",
         "test": "ng test",
-        "image": "docker build -t home-dashboard .",
-        "postinstall": "mkdir lib && cd lib && git clone https://github.com/home-assistant/home-assistant-js-websocket.git"
+        "image": "docker build -t home-dashboard ."
     },
     "version": "0.0.0"
 }
