@@ -1,0 +1,9 @@
+npm-debug.log
+node_modules
+dist
+.reify-cache
+yarn-error.log
+.rpt2_cache
+.rts2_cache*
+# It's a lib, so no one will ever use this lock file.
+yarn.lock

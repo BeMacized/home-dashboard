@@ -1,0 +1,48 @@
+{
+  "name": "home-assistant-js-websocket",
+  "amdName": "HAWS",
+  "sideEffects": false,
+  "version": "4.4.0",
+  "description": "Home Assistant websocket client",
+  "source": "lib/index.ts",
+  "types": "dist/index.d.ts",
+  "main": "dist/haws.umd.js",
+  "module": "dist/haws.es.js",
+  "repository": {
+    "url": "https://github.com/home-assistant/home-assistant-js-websocket.git",
+    "type": "git"
+  },
+  "scripts": {
+    "watch": "microbundle watch",
+    "build": "microbundle",
+    "test": "mocha test/*.spec.ts",
+    "prepublishOnly": "rm -rf dist && microbundle && npm test"
+  },
+  "author": "Paulus Schoutsen <paulus@paulusschoutsen.nl>",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@types/mocha": "^5.2.7",
+    "husky": "^3.0.1",
+    "lint-staged": "^9.2.0",
+    "microbundle": "^0.11.0",
+    "mocha": "^6.2.0",
+    "prettier": "^1.18.2",
+    "ts-node": "^8.3.0",
+    "typescript": "^3.5.3"
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {},
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,js,json,css,md}": [
+      "prettier --write",
+      "git add"
+    ]
+  }
+}
