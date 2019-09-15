@@ -9,7 +9,6 @@ import {
     Output,
     SimpleChanges,
     ViewChild,
-    ViewEncapsulation,
 } from '@angular/core';
 import 'conic-gradient';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -17,17 +16,19 @@ import { fade } from '../../../../utils/animations';
 import { DIRECTION_ALL } from 'hammerjs';
 import mired from 'mired';
 import colorTemp from 'color-temperature';
-import Color from 'color';
 import { HammerService } from '../../../../services/hammer.service';
+import ColorConvert from 'color-convert';
+import * as _ from 'lodash';
+import { miredsToHex } from '../../../../utils/color-utils';
 
-type ColorEditorValue = ColorEditorColorValue | ColorEditorTempValue;
+export type ColorEditorValue = ColorEditorColorValue | ColorEditorTempValue;
 
-interface ColorEditorColorValue {
+export interface ColorEditorColorValue {
     type: 'COLOR';
     color: string;
 }
 
-interface ColorEditorTempValue {
+export interface ColorEditorTempValue {
     type: 'TEMP';
     mireds: number;
 }
@@ -40,16 +41,21 @@ interface ColorEditorTempValue {
 })
 export class ColorEditorComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
     // I/O
-    @Input() mode: 'COLOR' | 'TEMP';
     @Input() miredsMin: number;
     @Input() miredsMax: number;
-    @Output() done: EventEmitter<ColorEditorValue> = new EventEmitter<ColorEditorValue>();
+
+    @Output() done: EventEmitter<void> = new EventEmitter<void>();
+    @Output() valueChange: EventEmitter<ColorEditorValue> = new EventEmitter<ColorEditorValue>();
+    @Input() set value(value: ColorEditorValue) {
+        this.onInputChange(value);
+    }
 
     // Gesture
     @ViewChild('gradientArea') gradientAreaEl;
     hammer: HammerManager;
 
     // Gradient
+    mode: 'COLOR' | 'TEMP' = 'COLOR';
     colorGradient;
     tempGradient;
     tempStops: string;
@@ -58,8 +64,7 @@ export class ColorEditorComponent implements OnInit, OnChanges, AfterViewInit, O
     pickerTop = 0;
     pickerLeft = 0;
     pickerColor;
-
-    value: ColorEditorValue;
+    cachedValue: ColorEditorValue;
 
     constructor(private sanitizer: DomSanitizer, private hs: HammerService) {}
 
@@ -72,30 +77,26 @@ export class ColorEditorComponent implements OnInit, OnChanges, AfterViewInit, O
     }
 
     async ngOnChanges(changes: SimpleChanges) {
-        if (!this.miredsMin || !this.miredsMax) return;
         if (
+            this.miredsMin &&
+            this.miredsMax &&
             changes.miredsMin &&
             changes.miredsMax &&
-            changes.miredsMin.previousValue === changes.miredsMin.currentValue &&
-            changes.miredsMax.previousValue === changes.miredsMax.currentValue
-        )
-            return;
-        const count = 5;
-        const rawStops = new Array(count).fill(null).map((_, i) => {
-            const mireds = ((count - i - 1) / (count - 1)) * (this.miredsMax - this.miredsMin) + this.miredsMin;
-            const c: { [c: string]: number } = colorTemp.colorTemperature2rgb(mired.miredToKelvin(mireds));
-            return (
-                `#${c.red.toString(16).padStart(2, '0')}` +
-                `${c.green.toString(16).padStart(2, '0')}` +
-                `${c.blue.toString(16).padStart(2, '0')}`
-            );
-        });
-        const stops = [...rawStops, ...rawStops.slice(0, rawStops.length - 1).reverse()].join(', ');
-        if (stops !== this.tempStops) {
-            this.tempStops = stops;
-            this.tempGradient = this.sanitizer.bypassSecurityTrustStyle(
-                'url(' + new (window as any).ConicGradient({ stops: this.tempStops }).blobURL + ')'
-            );
+            changes.miredsMin.previousValue !== changes.miredsMin.currentValue &&
+            changes.miredsMax.previousValue !== changes.miredsMax.currentValue
+        ) {
+            const count = 6;
+            const rawStops = new Array(count).fill(null).map((v, i) => {
+                const mireds = ((count - i - 1) / (count - 1)) * (this.miredsMax - this.miredsMin) + this.miredsMin;
+                return miredsToHex(mireds);
+            });
+            const stops = [...rawStops, ...rawStops.slice(0, rawStops.length - 1).reverse()].join(', ');
+            if (stops !== this.tempStops) {
+                this.tempStops = stops;
+                this.tempGradient = this.sanitizer.bypassSecurityTrustStyle(
+                    'url(' + new (window as any).ConicGradient({ stops: this.tempStops }).blobURL + ')'
+                );
+            }
         }
     }
 
@@ -109,6 +110,35 @@ export class ColorEditorComponent implements OnInit, OnChanges, AfterViewInit, O
 
     ngOnDestroy() {
         this.hammer.destroy();
+    }
+
+    onInputChange(value: ColorEditorValue) {
+        if (_.isEqual(value, this.cachedValue)) return;
+        this.mode = value.type;
+        const area: ClientRect = this.gradientAreaEl.nativeElement.getBoundingClientRect();
+        const maxDistance = area.width / 2;
+        const minDistance = area.width / 6;
+        let angle;
+        let dist;
+        switch (value.type) {
+            case 'COLOR': {
+                this.pickerColor = value.color;
+                const hsl: number[] = ColorConvert.hex.hsl(value.color.substring(1));
+                angle = hsl[0];
+                dist = 1 - (hsl[2] - 50) / 50;
+                break;
+            }
+            case 'TEMP': {
+                this.pickerColor = miredsToHex(value.mireds);
+                angle = 180 - ((value.mireds - this.miredsMin) / (this.miredsMax - this.miredsMin)) * 180;
+                dist = 0.5;
+                break;
+            }
+        }
+        this.pickerLeft =
+            (dist * (maxDistance - minDistance) + minDistance) * Math.sin((Math.PI / 180) * angle) + area.width / 2;
+        this.pickerTop =
+            -(dist * (maxDistance - minDistance) + minDistance) * Math.cos((Math.PI / 180) * angle) + area.width / 2;
     }
 
     onPick(event: HammerInput) {
@@ -138,19 +168,32 @@ export class ColorEditorComponent implements OnInit, OnChanges, AfterViewInit, O
         const pickerX = normalX + centerX;
 
         switch (this.mode) {
-            case 'COLOR':
+            case 'COLOR': {
                 const hue = (Math.round((Math.atan2(pickerY - centerX, pickerX - centerY) * 180) / Math.PI) % 360) + 90;
                 const lightness = Math.max(
                     50,
                     Math.min(100, 100 - Math.round(((distance - minDistance) / (maxDistance - minDistance)) * 50))
                 );
                 this.pickerColor = `hsl(${hue}, 100%, ${lightness}%)`;
+                this.cachedValue = { type: 'COLOR', color: '#' + ColorConvert.hsl.hex([hue, 100, lightness]) };
+                this.valueChange.emit(this.cachedValue);
                 break;
-            case 'TEMP':
+            }
+            case 'TEMP': {
+                const angle =
+                    (Math.round((Math.atan2(pickerY - centerX, pickerX - centerY) * 180) / Math.PI) + 90 * 5) % 360;
+                const mireds =
+                    ((angle < 180 ? 180 - angle : angle - 180) / 180) * (this.miredsMax - this.miredsMin) +
+                    this.miredsMin;
+                this.pickerColor = miredsToHex(mireds);
+                this.cachedValue = { type: 'TEMP', mireds };
+                this.valueChange.emit(this.cachedValue);
                 break;
+            }
         }
 
         this.pickerTop = pickerY;
         this.pickerLeft = pickerX;
     }
+    x;
 }

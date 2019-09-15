@@ -13,7 +13,8 @@ import {
     callService,
     Connection,
     HassEntityBase,
-} from 'home-assistant-js-websocket';
+    Auth,
+} from '../../../lib/home-assistant-js-websocket/lib/index';
 import { environment } from '../../environments/environment';
 import { BehaviorSubject, Observable } from 'rxjs';
 
@@ -40,7 +41,6 @@ export class HomeAssistantService {
 
     async callService(domain: string, service: string, payload: any) {
         if (!this.connection) return console.warn('Cannot call service as connection is null');
-        console.log('SERVICE CALL', domain, service, payload);
         await callService(this.connection, domain, service, payload);
     }
 
@@ -65,6 +65,7 @@ export class HomeAssistantService {
                 return;
             }
         }
+        auth = new Auth(auth.data, auth._saveTokens);
         this.connection = await createConnection({ auth });
         subscribeEntities(this.connection, ent => this.entities$.next(this._parseSupportedFeatures(ent)));
     }

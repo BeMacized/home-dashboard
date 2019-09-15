@@ -24,7 +24,7 @@
             ></app-color-preset>
         </div>
         <div class="preset-container">
-            <div class="btn-edit" (click)="onEdit()">
+            <div class="btn-edit" (click)="onEdit()" [style.background-color]="currentColor" [style.color]="isDark(currentColor) ? '#FFF' : '#000'">
                 <span>Edit</span>
             </div>
         </div>

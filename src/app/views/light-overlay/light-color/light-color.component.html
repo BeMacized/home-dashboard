@@ -1,13 +1,12 @@
 <div class="mode mode-presets" *ngIf="mode === 'PRESETS'" [@zoomFadeShrink]>
     <app-light-overlay-header text="Colour"></app-light-overlay-header>
-    <app-color-presets (edit)="onEdit()"></app-color-presets>
-    <app-color-editor
-        (done)="onDone()"
-        *ngIf="mode === 'EDIT'"
-        [mode]="editMode"
-        [miredsMin]="(entityOverlay.entity$ | async)?.attributes?.min_mireds"
-        [miredsMax]="(entityOverlay.entity$ | async)?.attributes?.max_mireds"
-    ></app-color-editor>
+    <app-color-presets
+        (edit)="onEdit()"
+        [presets]="presets"
+        (currentPresetChange)="onChangePreset($event)"
+        [currentPreset]="currentPreset"
+        [currentColor]="currentColor || '#FFFFFF'"
+    ></app-color-presets>
     <div class="footer">
         <div
             class="btn btn-action"
@@ -22,16 +21,26 @@
     <app-light-overlay-header text="Colour"></app-light-overlay-header>
     <app-color-editor
         (done)="onDone()"
-        [mode]="editMode"
-        [miredsMin]="(entityOverlay.entity$ | async)?.attributes?.min_mireds"
-        [miredsMax]="(entityOverlay.entity$ | async)?.attributes?.max_mireds"
+        [miredsMin]="entity?.attributes?.min_mireds"
+        [miredsMax]="entity?.attributes?.max_mireds"
+        [(value)]="editValue"
     ></app-color-editor>
     <div class="footer">
         <div class="btn-action-group">
-            <div class="btn btn-action" *ngIf="showColorButton | async" [class.active]="editMode === 'COLOR'" (click)="editMode = 'COLOR'">
+            <div
+                class="btn btn-action"
+                *ngIf="showColorButton | async"
+                [class.active]="editValue?.type === 'COLOR'"
+                (click)="switchColorType('COLOR')"
+            >
                 Color
             </div>
-            <div class="btn btn-action" *ngIf="showColorTempButton | async" [class.active]="editMode === 'TEMP'" (click)="editMode = 'TEMP'">
+            <div
+                class="btn btn-action"
+                *ngIf="showColorTempButton | async"
+                [class.active]="editValue?.type === 'TEMP'"
+                (click)="switchColorType('TEMP')"
+            >
                 Temperature
             </div>
         </div>

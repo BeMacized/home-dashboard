@@ -1,6 +1,9 @@
 {
     "extends": "tslint:recommended",
     "rulesDirectory": ["codelyzer"],
+    "linterOptions": {
+        "exclude": ["lib/"]
+    },
     "rules": {
         "array-type": false,
         "arrow-parens": false,

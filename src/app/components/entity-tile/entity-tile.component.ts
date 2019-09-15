@@ -1,6 +1,5 @@
 import { Component, ElementRef, Input, OnDestroy, OnInit } from '@angular/core';
-import { HassEntity } from 'home-assistant-js-websocket';
-import { HomeAssistantService } from '../../services/home-assistant.service';
+import { HassEntity, HomeAssistantService } from '../../services/home-assistant.service';
 import { Observable, Subscription } from 'rxjs';
 import { filter, map, shareReplay } from 'rxjs/operators';
 import { TileBehavior } from './tile-behaviors/tile-behavior';
