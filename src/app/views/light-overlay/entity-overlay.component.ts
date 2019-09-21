@@ -5,6 +5,7 @@ import { Observable, Subscription } from 'rxjs';
 import { filter, map, take } from 'rxjs/operators';
 import { DomSanitizer } from '@angular/platform-browser';
 import { EntityOverlayService } from '../../services/entity-overlay.service';
+import { animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
     selector: 'app-entity-overlay',
