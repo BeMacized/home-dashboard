@@ -47,13 +47,13 @@ export class EntityTileComponent implements OnInit, OnDestroy {
         this.active$ = this.entity$.pipe(map(e => this.behavior.getActive(e)));
         this.icon$ = this.entity$.pipe(map(e => this.behavior.getIconName(e)));
         // Listen for gestures
-        // this.hammer = this.hs.create(this.el, {
-        //     touchAction: 'pan-x'
-        // });
-        // this.hammer.add(new this.hs.lib.Tap());
-        // this.hammer.add(new this.hs.lib.Press());
-        // this.hammer.on('tap', event => this.behavior.onTap(event, this.entity$));
-        // this.hammer.on('press', event => this.behavior.onPress(event, this.entity$));
+        this.hammer = this.hs.create(this.el, {
+            touchAction: 'pan-x',
+        });
+        this.hammer.add(new this.hs.lib.Tap());
+        this.hammer.add(new this.hs.lib.Press());
+        this.hammer.on('tap', event => this.behavior.onTap(event, this.entity$));
+        this.hammer.on('press', event => this.behavior.onPress(event, this.entity$));
     }
 
     ngOnDestroy() {
