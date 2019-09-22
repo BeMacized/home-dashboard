@@ -8,11 +8,11 @@
     align-items: flex-start;
     overflow-y: auto;
 
+    background: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), url('/assets/bgs/bg2.jpg');
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
     background-position: center;
-    background-image: url('/assets/bgs/bg1.jpg');
 }
 
 .bottom-pad {

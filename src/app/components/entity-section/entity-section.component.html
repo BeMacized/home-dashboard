@@ -1,4 +1,4 @@
 <h2 class="title">{{ title }}</h2>
-<div class="entity-grid">
-    <ng-content select="app-entity-tile"></ng-content>
+<div class="pages" (scroll)="_onPageScroll()" #pageScroller>
+    <ng-content select="app-entity-section-page"></ng-content>
 </div>

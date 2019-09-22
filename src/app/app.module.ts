@@ -22,6 +22,7 @@ import { ColorPresetsComponent } from './views/light-overlay/light-color/color-p
 import { LightOverlayHeaderComponent } from './views/light-overlay/light-overlay-header/light-overlay-header.component';
 import { ColorPresetComponent } from './views/light-overlay/light-color/color-presets/color-preset/color-preset.component';
 import { ColorEditorComponent } from './views/light-overlay/light-color/color-editor/color-editor.component';
+import { EntitySectionPageComponent } from './components/entity-section/entity-section-page/entity-section-page.component';
 
 @NgModule({
     declarations: [
@@ -42,6 +43,7 @@ import { ColorEditorComponent } from './views/light-overlay/light-color/color-ed
         LightOverlayHeaderComponent,
         ColorPresetComponent,
         ColorEditorComponent,
+        EntitySectionPageComponent,
     ],
     imports: [
         BrowserModule,

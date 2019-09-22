@@ -4,42 +4,34 @@
     <app-room-section title="Rooms">
         <app-room-tile
             [name]="room"
-            *ngFor="let room of rooms"
-            [active]="activeRoom == room"
-            (onSelect)="onRoomSelect(room)"
+            *ngFor="let room of rooms; let i = index"
+            [active]="activeRoom == i"
+            (onSelect)="entitySection?.setPage(i)"
         ></app-room-tile>
     </app-room-section>
 
-    <app-page-view [index]="rooms.indexOf(activeRoom)">
-        <app-page-view-page>
-            <app-entity-section title="Devices">
-                <app-entity-tile entityId="light.livingroom"></app-entity-tile>
-                <app-entity-tile entityId="light.livingroom_table_light"></app-entity-tile>
-                <app-entity-tile entityId="light.livingroom_couch_light"></app-entity-tile>
-                <app-entity-tile entityId="light.livingroom_tv_light"></app-entity-tile>
-                <app-entity-tile entityId="light.livingroom_cabinet_light"></app-entity-tile>
-                <app-entity-tile entityId="light.livingroom_piano_lights"></app-entity-tile>
-            </app-entity-section>
-        </app-page-view-page>
-        <app-page-view-page>
-            <app-entity-section title="Devices">
-                <app-entity-tile entityId="light.bedroom_bodhi"></app-entity-tile>
-                <app-entity-tile entityId="light.bedroom_bodhi_ceiling_light"></app-entity-tile>
-                <app-entity-tile entityId="light.bedroom_bodhi_standing_light"></app-entity-tile>
-            </app-entity-section>
-        </app-page-view-page>
-        <app-page-view-page>
-            <app-entity-section title="Devices">
-                <app-entity-tile entityId="light.kitchen"></app-entity-tile>
-                <app-entity-tile entityId="light.kitchen_ceiling_light"></app-entity-tile>
-                <app-entity-tile entityId="light.kitchen_counter_light"></app-entity-tile>
-            </app-entity-section>
-        </app-page-view-page>
-        <app-page-view-page>
-            <app-entity-section title="Devices">
-                <app-entity-tile entityId="light.hallway_light"></app-entity-tile>
-                <app-entity-tile entityId="light.hallway_storage_light"></app-entity-tile>
-            </app-entity-section>
-        </app-page-view-page>
-    </app-page-view>
+    <app-entity-section title="Devices" (pageChange)="onRoomPageChange($event)" #entitySection>
+        <app-entity-section-page>
+            <app-entity-tile entityId="light.livingroom"></app-entity-tile>
+            <app-entity-tile entityId="light.livingroom_table_light"></app-entity-tile>
+            <app-entity-tile entityId="light.livingroom_couch_light"></app-entity-tile>
+            <app-entity-tile entityId="light.livingroom_tv_light"></app-entity-tile>
+            <app-entity-tile entityId="light.livingroom_cabinet_light"></app-entity-tile>
+            <app-entity-tile entityId="light.livingroom_piano_lights"></app-entity-tile>
+        </app-entity-section-page>
+        <app-entity-section-page>
+            <app-entity-tile entityId="light.bedroom_bodhi"></app-entity-tile>
+            <app-entity-tile entityId="light.bedroom_bodhi_ceiling_light"></app-entity-tile>
+            <app-entity-tile entityId="light.bedroom_bodhi_standing_light"></app-entity-tile>
+        </app-entity-section-page>
+        <app-entity-section-page>
+            <app-entity-tile entityId="light.kitchen"></app-entity-tile>
+            <app-entity-tile entityId="light.kitchen_ceiling_light"></app-entity-tile>
+            <app-entity-tile entityId="light.kitchen_counter_light"></app-entity-tile>
+        </app-entity-section-page>
+        <app-entity-section-page>
+            <app-entity-tile entityId="light.hallway_light"></app-entity-tile>
+            <app-entity-tile entityId="light.hallway_storage_light"></app-entity-tile>
+        </app-entity-section-page>
+    </app-entity-section>
 </app-entity-page-scaffold>

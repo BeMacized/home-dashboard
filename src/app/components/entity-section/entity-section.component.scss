@@ -4,19 +4,25 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    width: 100%;
+    width: calc(100% + 24px * 2);
+    margin: 0 -24px;
 }
 
 .title {
     font-size: 18px;
     font-weight: 500;
+    margin-left: 24px;
 }
 
-.entity-grid {
-    margin-top: 18px;
+.pages {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: stretch;
+    overflow-x: auto;
     width: 100%;
-    display: grid;
-    grid-gap: 12px;
-    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-    grid-auto-rows: 1fr;
+    scroll-snap-type: x mandatory;
+    &::-webkit-scrollbar {
+        display: none;
+    }
 }

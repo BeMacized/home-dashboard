@@ -10,9 +10,9 @@ export class HammerService {
         return typeof window !== 'undefined' ? (window as any).Hammer : undefined;
     }
 
-    public create(elementRef: ElementRef): HammerManager {
+    public create(elementRef: ElementRef, options?: any): HammerManager {
         return this.zone.run(_ => {
-            return new this.lib(elementRef.nativeElement);
+            return new this.lib(elementRef.nativeElement, options);
         });
     }
 }

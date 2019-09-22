@@ -19,6 +19,7 @@
     overflow-x: auto;
     display: flex;
     flex-direction: row;
+    overscroll-behavior-y: auto;
     &::-webkit-scrollbar {
         display: none;
     }

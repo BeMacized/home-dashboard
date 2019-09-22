@@ -7,13 +7,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeViewComponent implements OnInit {
     rooms = ['Living Room', 'Bedroom Bodhi', 'Kitchen', 'Hallway'];
-    activeRoom = this.rooms[0];
+    activeRoom = 0;
 
     constructor() {}
 
     ngOnInit() {}
 
-    onRoomSelect = (room: string) => {
-        this.activeRoom = room;
-    };
+    onRoomPageChange(index: number) {
+        this.activeRoom = index;
+    }
 }
