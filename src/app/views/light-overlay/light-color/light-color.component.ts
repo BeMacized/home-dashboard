@@ -61,6 +61,7 @@ export class LightColorComponent implements OnInit, OnDestroy {
                     : e.features.includes('COLOR_TEMP')
                     ? { type: 'TEMP', mireds: e.attributes['color_temp'] }
                     : null;
+
                 this.currentColor = this._editValue
                     ? this._editValue.type === 'COLOR'
                         ? this._editValue.color
@@ -68,6 +69,8 @@ export class LightColorComponent implements OnInit, OnDestroy {
                         ? miredsToHex(this._editValue.mireds)
                         : null
                     : null;
+
+                console.log(this.currentColor, this._editValue, e.attributes);
             }
         });
         this.savePresetsSubject
