@@ -53,25 +53,9 @@ export class LightColorComponent implements OnInit, OnDestroy {
         this.entitySubscription = this.entityOverlay.entity$.subscribe(e => {
             if (!this.entity || (e && e.entity_id !== this.entity.entity_id)) {
                 this.loadPresets(e);
+                this.refreshCurrentColor(e);
             }
             this.entity = e;
-            if (!this._editValue) {
-                this._editValue = e.features.includes('COLOR')
-                    ? { type: 'COLOR', color: '#' + ColorConvert.rgb.hex(e.attributes['rgb_color']) }
-                    : e.features.includes('COLOR_TEMP')
-                    ? { type: 'TEMP', mireds: e.attributes['color_temp'] }
-                    : null;
-
-                this.currentColor = this._editValue
-                    ? this._editValue.type === 'COLOR'
-                        ? this._editValue.color
-                        : this._editValue.type === 'COLOR_TEMP'
-                        ? miredsToHex(this._editValue.mireds)
-                        : null
-                    : null;
-
-                console.log(this.currentColor, this._editValue, e.attributes);
-            }
         });
         this.savePresetsSubject
             .pipe(
@@ -141,7 +125,24 @@ export class LightColorComponent implements OnInit, OnDestroy {
         return this.entityOverlay.entity$.pipe(map(e => (!e ? null : e.features.includes('COLOR_TEMP'))));
     }
 
+    refreshCurrentColor = (e?: HassEntity) => {
+        e = e || this.entity;
+        this._editValue = e.features.includes('COLOR')
+            ? { type: 'COLOR', color: '#' + ColorConvert.rgb.hex(e.attributes['rgb_color']) }
+            : e.features.includes('COLOR_TEMP')
+            ? { type: 'TEMP', mireds: e.attributes['color_temp'] }
+            : null;
+        this.currentColor = this._editValue
+            ? this._editValue.type === 'COLOR'
+                ? this._editValue.color
+                : this._editValue.type === 'COLOR_TEMP'
+                ? miredsToHex(this._editValue.mireds)
+                : null
+            : null;
+    };
+
     onEdit() {
+        this.refreshCurrentColor();
         this.mode = 'EDIT';
     }
 
