@@ -56,7 +56,6 @@ export class EntityOverlayService {
         }
         this.entitySubscription.unsubscribe();
         this.entitySubscription = null;
-        this.entity$.next(null);
         this.showOverlay$.next(false);
     }
 }
