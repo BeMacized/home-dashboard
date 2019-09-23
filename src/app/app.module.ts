@@ -15,13 +15,13 @@ import { RoomTileComponent } from './components/room-tile/room-tile.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PageViewComponent } from './components/page-view/page-view.component';
 import { PageViewPageComponent } from './components/page-view/page-view-page/page-view-page.component';
-import { EntityOverlayComponent } from './views/light-overlay/entity-overlay.component';
-import { LightDimmerComponent } from './views/light-overlay/light-dimmer/light-dimmer.component';
-import { LightColorComponent } from './views/light-overlay/light-color/light-color.component';
-import { ColorPresetsComponent } from './views/light-overlay/light-color/color-presets/color-presets.component';
-import { LightOverlayHeaderComponent } from './views/light-overlay/light-overlay-header/light-overlay-header.component';
-import { ColorPresetComponent } from './views/light-overlay/light-color/color-presets/color-preset/color-preset.component';
-import { ColorEditorComponent } from './views/light-overlay/light-color/color-editor/color-editor.component';
+import { EntityOverlayComponent } from './views/entity-overlay/entity-overlay.component';
+import { LightDimmerComponent } from './views/entity-overlay/light-dimmer/light-dimmer.component';
+import { LightColorComponent } from './views/entity-overlay/light-color/light-color.component';
+import { ColorPresetsComponent } from './views/entity-overlay/light-color/color-presets/color-presets.component';
+import { EntityOverlayHeaderComponent } from './views/entity-overlay/entity-overlay-header/entity-overlay-header.component';
+import { ColorPresetComponent } from './views/entity-overlay/light-color/color-presets/color-preset/color-preset.component';
+import { ColorEditorComponent } from './views/entity-overlay/light-color/color-editor/color-editor.component';
 import { EntitySectionPageComponent } from './components/entity-section/entity-section-page/entity-section-page.component';
 
 @NgModule({
@@ -40,7 +40,7 @@ import { EntitySectionPageComponent } from './components/entity-section/entity-s
         LightDimmerComponent,
         LightColorComponent,
         ColorPresetsComponent,
-        LightOverlayHeaderComponent,
+        EntityOverlayHeaderComponent,
         ColorPresetComponent,
         ColorEditorComponent,
         EntitySectionPageComponent,

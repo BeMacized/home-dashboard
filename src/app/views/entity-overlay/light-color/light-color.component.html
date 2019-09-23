@@ -1,5 +1,5 @@
 <div class="mode mode-presets" *ngIf="mode === 'PRESETS'" [@zoomFadeShrink]>
-    <app-light-overlay-header text="Colour"></app-light-overlay-header>
+    <app-entity-overlay-header text="Colour"></app-entity-overlay-header>
     <app-color-presets
         (edit)="onEdit()"
         [presets]="presets"
@@ -8,17 +8,17 @@
         [currentColor]="currentColor || '#FFFFFF'"
     ></app-color-presets>
     <div class="footer">
-        <div
+        <button
             class="btn btn-action"
             (click)="entityOverlay.mode$.next('BRIGHTNESS')"
             *ngIf="showBrightnessModeButton | async"
         >
             Brightness
-        </div>
+        </button>
     </div>
 </div>
 <div class="mode mode-edit" *ngIf="mode === 'EDIT'" [@zoomFadeGrow]>
-    <app-light-overlay-header text="Colour"></app-light-overlay-header>
+    <app-entity-overlay-header text="Colour"></app-entity-overlay-header>
     <app-color-editor
         (done)="onDone()"
         [miredsMin]="entity?.attributes?.min_mireds"
@@ -27,22 +27,22 @@
     ></app-color-editor>
     <div class="footer">
         <div class="btn-action-group">
-            <div
+            <button
                 class="btn btn-action"
                 *ngIf="showColorButton | async"
                 [class.active]="editValue?.type === 'COLOR'"
                 (click)="switchColorType('COLOR')"
             >
                 Color
-            </div>
-            <div
+            </button>
+            <button
                 class="btn btn-action"
                 *ngIf="showColorTempButton | async"
                 [class.active]="editValue?.type === 'TEMP'"
                 (click)="switchColorType('TEMP')"
             >
                 Temperature
-            </div>
+            </button>
         </div>
     </div>
 </div>

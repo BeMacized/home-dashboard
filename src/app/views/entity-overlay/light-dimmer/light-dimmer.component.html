@@ -1,0 +1,15 @@
+<app-entity-overlay-header [text]="headerText$ | async"></app-entity-overlay-header>
+<div class="dimmer" #dimmer>
+    <div class="dimmer-bg"></div>
+    <div class="dimmer-fill" [style.height]="(brightness$ | async) * 100 + '%'"></div>
+</div>
+<div class="footer">
+    <button
+        class="btn btn-action"
+        (click)="entityOverlay.mode$.next('COLOR')"
+        *ngIf="showColorModeButton | async"
+        [disabled]="(entityOverlay.entity$ | async)?.state === 'off'"
+    >
+        Colour
+    </button>
+</div>
