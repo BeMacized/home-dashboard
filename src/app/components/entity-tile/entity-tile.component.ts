@@ -7,6 +7,7 @@ import { DefaultBehavior } from './tile-behaviors/default-behavior';
 import { LightBehavior } from './tile-behaviors/light-behavior';
 import { HammerService } from '../../services/hammer.service';
 import { EntityOverlayService } from '../../services/entity-overlay.service';
+import { SwitchBehavior } from './tile-behaviors/switch-behavior';
 
 @Component({
     selector: 'app-entity-tile',
@@ -65,6 +66,8 @@ export class EntityTileComponent implements OnInit, OnDestroy {
         switch (type) {
             case 'light':
                 return new LightBehavior(this.hass, this.entityOverlay);
+            case 'switch':
+                return new SwitchBehavior(this.hass, this.entityOverlay);
             default:
                 return new DefaultBehavior();
         }

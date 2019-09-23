@@ -4,7 +4,7 @@
             <i class="eva eva-2x tile-icon" [ngClass]="'eva-' + (icon$ | async)"></i>
         </div>
         <div class="bottom">
-            <span class="text">{{ name$ | async }}</span>
+            <span class="text" ellipsis [ellipsis-content]="name$ | async"></span>
             <span class="value">{{ value$ | async }}</span>
         </div>
     </div>

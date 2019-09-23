@@ -23,6 +23,7 @@ import { EntityOverlayHeaderComponent } from './views/entity-overlay/entity-over
 import { ColorPresetComponent } from './views/entity-overlay/light-color/color-presets/color-preset/color-preset.component';
 import { ColorEditorComponent } from './views/entity-overlay/light-color/color-editor/color-editor.component';
 import { EntitySectionPageComponent } from './components/entity-section/entity-section-page/entity-section-page.component';
+import { EllipsisModule } from 'ngx-ellipsis';
 
 @NgModule({
     declarations: [
@@ -50,6 +51,7 @@ import { EntitySectionPageComponent } from './components/entity-section/entity-s
         BrowserAnimationsModule,
         AppRoutingModule,
         ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+        EllipsisModule,
     ],
     bootstrap: [AppComponent],
 })

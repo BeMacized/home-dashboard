@@ -33,6 +33,7 @@ export class EntityOverlayService {
         // Reference entity on class
         this.entitySubscription = entity$.subscribe(entity => this.entity$.next(entity));
         entity$.pipe(take(1)).subscribe(entity => {
+            console.log(entity.features);
             // Set mode
             if (entity.features.includes('BRIGHTNESS')) {
                 this.mode$.next('BRIGHTNESS');
