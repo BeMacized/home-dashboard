@@ -1,5 +1,8 @@
 <div class="mode mode-presets" *ngIf="mode === 'PRESETS'" [@zoomFadeShrink]>
-    <app-entity-overlay-header text="Colour"></app-entity-overlay-header>
+    <app-entity-overlay-header
+        text="Colour"
+        [icon]="(this.entityOverlay.entity$ | async)?.icon"
+    ></app-entity-overlay-header>
     <app-color-presets
         (edit)="onEdit()"
         [presets]="presets"
@@ -15,10 +18,20 @@
         >
             Brightness
         </button>
+        <button
+            class="btn btn-action"
+            (click)="entityOverlay.mode$.next('SWITCH')"
+            *ngIf="showSwitchModeButton | async"
+        >
+            Switch
+        </button>
     </div>
 </div>
 <div class="mode mode-edit" *ngIf="mode === 'EDIT'" [@zoomFadeGrow]>
-    <app-entity-overlay-header text="Colour"></app-entity-overlay-header>
+    <app-entity-overlay-header
+        text="Colour"
+        [icon]="(this.entityOverlay.entity$ | async)?.icon"
+    ></app-entity-overlay-header>
     <app-color-editor
         (done)="onDone()"
         [miredsMin]="entity?.attributes?.min_mireds"

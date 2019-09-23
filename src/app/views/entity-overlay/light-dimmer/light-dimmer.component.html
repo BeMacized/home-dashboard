@@ -1,4 +1,8 @@
-<app-entity-overlay-header [text]="headerText$ | async"></app-entity-overlay-header>
+<app-entity-overlay-header
+    text="Brightness"
+    [subtext]="valueText$ | async"
+    [icon]="(this.entityOverlay.entity$ | async)?.icon"
+></app-entity-overlay-header>
 <div class="dimmer" #dimmer>
     <div class="dimmer-bg"></div>
     <div class="dimmer-fill" [style.height]="(brightness$ | async) * 100 + '%'"></div>

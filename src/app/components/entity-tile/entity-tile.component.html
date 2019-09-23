@@ -1,7 +1,7 @@
 <div class="tile" [class.active]="active$ | async" [attr.data-entity-id]="entityId">
     <div class="tile-content">
         <div class="top">
-            <i class="eva eva-2x tile-icon" [ngClass]="'eva-' + (icon$ | async)"></i>
+            <i [class]="'tile-icon eva-2x ' + (icon$ | async)" ></i>
         </div>
         <div class="bottom">
             <span class="text" ellipsis [ellipsis-content]="name$ | async"></span>

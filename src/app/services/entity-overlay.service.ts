@@ -4,7 +4,7 @@ import { delay, filter, map, mergeMap, switchMap, take, tap, throttleTime } from
 import { HassEntity, HomeAssistantService } from './home-assistant.service';
 import { async } from 'rxjs/internal/scheduler/async';
 
-type LightOverlayMode = 'BRIGHTNESS' | 'COLOR';
+type LightOverlayMode = 'BRIGHTNESS' | 'COLOR' | 'SWITCH';
 
 type CloseHandler = () => boolean;
 
@@ -33,10 +33,11 @@ export class EntityOverlayService {
         // Reference entity on class
         this.entitySubscription = entity$.subscribe(entity => this.entity$.next(entity));
         entity$.pipe(take(1)).subscribe(entity => {
-            console.log(entity.features);
             // Set mode
             if (entity.features.includes('BRIGHTNESS')) {
                 this.mode$.next('BRIGHTNESS');
+            } else if (entity.entity_id.startsWith('light.') || entity.entity_id.startsWith('switch.')) {
+                this.mode$.next('SWITCH');
             } else if (entity.features.includes('COLOR') || entity.features.includes('COLOR_TEMP')) {
                 this.mode$.next('COLOR');
             } else {

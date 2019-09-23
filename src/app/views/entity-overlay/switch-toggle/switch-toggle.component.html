@@ -1,0 +1,19 @@
+<app-entity-overlay-header
+    [text]="'Toggle'"
+    [subtext]="(this.entityOverlay.entity$ | async)?.state"
+    [icon]="(this.entityOverlay.entity$ | async).icon"
+></app-entity-overlay-header>
+<div class="switch" #switchTrack>
+    <div class="switch-bg"></div>
+    <div class="switch-fill" #switch [style.top]="switchTop + 'px'" [class.panning]="panning"></div>
+</div>
+<div class="footer">
+    <button
+        class="btn btn-action"
+        (click)="entityOverlay.mode$.next('COLOR')"
+        *ngIf="showColorModeButton | async"
+        [disabled]="(entityOverlay.entity$ | async)?.state === 'off'"
+    >
+        Colour
+    </button>
+</div>

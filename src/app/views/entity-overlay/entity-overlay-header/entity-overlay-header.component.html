@@ -1,2 +1,3 @@
-<i class="eva eva-2x eva-bulb"></i>
-<span>{{text}}</span>
+<i [class]="'eva-2x ' + icon"></i>
+<span class="text">{{text}}</span>
+<span class="subtext" *ngIf="subtext">{{subtext}}</span>

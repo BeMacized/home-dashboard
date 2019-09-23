@@ -7,6 +7,8 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class EntityOverlayHeaderComponent implements OnInit {
     @Input() text = 'Unknown';
+    @Input() subtext = '';
+    @Input() icon = 'bulb';
 
     constructor() {}
 

@@ -3,7 +3,7 @@ import { HassEntity } from '../../../services/home-assistant.service';
 
 export abstract class TileBehavior {
     getIconName(entity: HassEntity): string {
-        return 'question-mark-circle';
+        return entity.icon;
     }
 
     getActive(entity: HassEntity): boolean {

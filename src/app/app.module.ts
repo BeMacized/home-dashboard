@@ -24,6 +24,7 @@ import { ColorPresetComponent } from './views/entity-overlay/light-color/color-p
 import { ColorEditorComponent } from './views/entity-overlay/light-color/color-editor/color-editor.component';
 import { EntitySectionPageComponent } from './components/entity-section/entity-section-page/entity-section-page.component';
 import { EllipsisModule } from 'ngx-ellipsis';
+import { SwitchToggleComponent } from './views/entity-overlay/switch-toggle/switch-toggle.component';
 
 @NgModule({
     declarations: [
@@ -45,6 +46,7 @@ import { EllipsisModule } from 'ngx-ellipsis';
         ColorPresetComponent,
         ColorEditorComponent,
         EntitySectionPageComponent,
+        SwitchToggleComponent,
     ],
     imports: [
         BrowserModule,

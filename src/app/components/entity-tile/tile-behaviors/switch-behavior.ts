@@ -15,10 +15,6 @@ export class SwitchBehavior extends TileBehavior {
         return entity.state === 'on';
     }
 
-    getIconName(entity: HassEntity): string {
-        return entity.state === 'off' ? 'toggle-left' : 'toggle-right';
-    }
-
     getValue(entity: HassEntity): string {
         return entity.state;
     }

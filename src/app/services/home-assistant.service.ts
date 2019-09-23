@@ -20,6 +20,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 
 export declare type HassEntity = _HassEntity & {
     features: string[];
+    icon?: string;
 };
 
 export declare interface HassEntities {
@@ -67,7 +68,11 @@ export class HomeAssistantService {
         }
         auth = new Auth(auth.data, auth._saveTokens);
         this.connection = await createConnection({ auth });
-        subscribeEntities(this.connection, ent => this.entities$.next(this._parseSupportedFeatures(ent)));
+        subscribeEntities(this.connection, ent => {
+            const entities = this._parseSupportedFeatures(ent);
+            Object.values(entities).forEach(entity => (entity.icon = this.getIconForEntity(entity)));
+            this.entities$.next(entities);
+        });
     }
 
     _saveTokens = async (data: AuthData | null) => {
@@ -106,5 +111,13 @@ export class HomeAssistantService {
             acc[e] = _parseEntity(entities[e]);
             return acc;
         }, {});
+    }
+
+    getIconForEntity(entity: HassEntity): string {
+        if (entity.entity_id.startsWith('light.'))
+            return entity.state === 'on' ? 'eva eva-bulb' : 'eva eva-bulb-outline';
+        if (entity.entity_id.startsWith('switch.'))
+            return entity.state === 'on' ? 'eva eva-toggle-right' : 'eva eva-toggle-left';
+        return 'eva eva-question-mark-circle';
     }
 }

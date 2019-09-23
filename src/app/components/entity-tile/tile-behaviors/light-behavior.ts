@@ -15,10 +15,6 @@ export class LightBehavior extends TileBehavior {
         return entity.state === 'on';
     }
 
-    getIconName(entity: HassEntity): string {
-        return 'bulb';
-    }
-
     getValue(entity: HassEntity): string {
         if (entity.state === 'off') return 'off';
         if (entity.features.includes('BRIGHTNESS') && (entity.attributes.brightness || 0) < 255) {

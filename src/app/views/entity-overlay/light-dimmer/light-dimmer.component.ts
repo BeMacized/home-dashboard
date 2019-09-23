@@ -18,7 +18,7 @@ export class LightDimmerComponent implements OnInit, OnDestroy, AfterViewInit {
     hammer: HammerManager;
     brightness$: BehaviorSubject<number>;
     brightnessSet$: Subject<number>;
-    headerText$: Observable<string>;
+    valueText$: Observable<string>;
 
     @ViewChild('dimmer') dimmerEl;
 
@@ -39,7 +39,7 @@ export class LightDimmerComponent implements OnInit, OnDestroy, AfterViewInit {
         this.brightness$ = new BehaviorSubject<number>(0.0);
         this.brightnessSet$ = new Subject<number>();
         // Define header text
-        this.headerText$ = this.brightness$.pipe(map(v => Math.round((v || 0) * 100) + '% Brightness'));
+        this.valueText$ = this.brightness$.pipe(map(v => Math.round((v || 0) * 100) + '%'));
         // Get initial brightness
         this.entityOverlay.entity$
             .pipe(

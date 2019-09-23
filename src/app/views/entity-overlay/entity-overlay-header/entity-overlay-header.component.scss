@@ -5,13 +5,18 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    font-weight: bold;
 
     .eva {
         color: $color-bulb;
     }
 
-    span {
+    .text {
         margin-top: 10px;
+        font-weight: bold;
+    }
+
+    .subtext {
+        margin-top: 5px;
+        opacity: 0.8;
     }
 }

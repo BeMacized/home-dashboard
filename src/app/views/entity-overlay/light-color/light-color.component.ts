@@ -119,6 +119,17 @@ export class LightColorComponent implements OnInit, OnDestroy {
         return this.entityOverlay.entity$.pipe(map(e => (!e ? null : e.features.includes('BRIGHTNESS'))));
     }
 
+    get showSwitchModeButton(): Observable<boolean> {
+        return this.entityOverlay.entity$.pipe(
+            map(e =>
+                !e
+                    ? null
+                    : !e.features.includes('BRIGHTNESS') &&
+                      (e.entity_id.startsWith('switch.') || e.entity_id.startsWith('light.'))
+            )
+        );
+    }
+
     get showColorButton(): Observable<boolean> {
         return this.entityOverlay.entity$.pipe(map(e => (!e ? null : e.features.includes('COLOR'))));
     }

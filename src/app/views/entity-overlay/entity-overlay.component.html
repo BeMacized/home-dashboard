@@ -5,5 +5,6 @@
     #controlContainer
 >
     <app-light-dimmer *ngIf="display && (entityOverlay.mode$ | async) === 'BRIGHTNESS'" [@controlFade]></app-light-dimmer>
+    <app-switch-toggle *ngIf="display && (entityOverlay.mode$ | async) === 'SWITCH'" [@controlFade]></app-switch-toggle>
     <app-light-color *ngIf="display && (entityOverlay.mode$ | async) === 'COLOR'" [@controlFade]></app-light-color>
 </div>

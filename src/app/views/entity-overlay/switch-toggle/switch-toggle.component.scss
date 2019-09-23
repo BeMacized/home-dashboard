@@ -26,22 +26,23 @@
     }
 }
 
-.dimmer {
+.switch {
     pointer-events: auto;
     align-self: center;
     border-radius: 48px;
-    width: 144px;
+    width: 134px;
     flex: 2;
     max-height: 400px;
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
+    justify-content: flex-start;
     align-items: stretch;
     position: relative;
+    padding: 10px;
     @include shadow-2xl();
 
-    .dimmer-bg {
+    .switch-bg {
         z-index: 1;
         transition: all 0.25s ease;
         content: '';
@@ -54,24 +55,16 @@
         opacity: 0.4;
     }
 
-    .dimmer-fill {
+    .switch-fill {
         z-index: 2;
         background-color: white;
         width: 100%;
-        height: 100%;
+        height: 50%;
         position: relative;
-        transition: height 0.1s ease;
-
-        &:after {
-            top: 4px;
-            left: 50%;
-            margin-left: -16px;
-            position: absolute;
-            content: '';
-            width: 32px;
-            height: 4px;
-            border-radius: 4px;
-            background-color: #666666;
+        border-radius: 38px;
+        transition: top 0.05s;
+        &:not(.panning) {
+            transition: top 0.25s ease;
         }
     }
 }
