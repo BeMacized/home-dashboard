@@ -1,4 +1,9 @@
 <h2 class="title">{{ title }}</h2>
-<div class="pages" (scroll)="_onPageScroll()" #pageScroller>
+<div
+    class="pages"
+    (scroll)="_onPageScroll()"
+    [style.scroll-snap-type]="animating ? 'none' : 'x mandatory'"
+    #pageScroller
+>
     <ng-content select="app-entity-section-page"></ng-content>
 </div>
