@@ -117,7 +117,7 @@ export class HomeAssistantService {
         if (entity.entity_id.startsWith('light.'))
             return entity.state === 'on' ? 'eva eva-bulb' : 'eva eva-bulb-outline';
         if (entity.entity_id.startsWith('switch.'))
-            return entity.state === 'on' ? 'eva eva-toggle-right' : 'eva eva-toggle-left';
+            return entity.state === 'on' ? 'eva eva-toggle-right' : 'eva eva-toggle-left-outline';
         return 'eva eva-question-mark-circle';
     }
 }
