@@ -75,7 +75,9 @@ export class LightColorComponent implements OnInit, OnDestroy {
                         data = {
                             rgb_color: ColorConvert.hex.rgb(color.color),
                         };
-                        this.currentColor = color.color;
+                        const hsl: number[] = ColorConvert.hex.hsl(color.color.substring(1));
+                        hsl[2] = Math.min(hsl[2] + 10, 100);
+                        this.currentColor = '#' + ColorConvert.hsl.hex(hsl);
                         break;
                     case 'TEMP':
                         data = { color_temp: color.mireds };
@@ -134,7 +136,11 @@ export class LightColorComponent implements OnInit, OnDestroy {
             : null;
         this.currentColor = this._editValue
             ? this._editValue.type === 'COLOR'
-                ? this._editValue.color
+                ? (() => {
+                      const hsl: number[] = ColorConvert.hex.hsl(this._editValue.color.substring(1));
+                      hsl[2] = Math.min(hsl[2] + 10, 100);
+                      return '#' + ColorConvert.hsl.hex(hsl);
+                  })()
                 : this._editValue.type === 'COLOR_TEMP'
                 ? miredsToHex(this._editValue.mireds)
                 : null
