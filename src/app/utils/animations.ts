@@ -7,7 +7,7 @@ export function fade(name = 'fade', length = '.15s ease') {
     ]);
 }
 
-export function destroyDelay(length: '.5s', name = 'destroyDelay', childAnimation = '') {
+export function destroyDelay(length = '.5s', name = 'destroyDelay', childAnimation = '') {
     return trigger(name, [
         transition(':enter', [query(childAnimation, animateChild(), { optional: true }), animate(length)]),
         transition(':leave', [query(childAnimation, animateChild(), { optional: true }), animate(length)]),

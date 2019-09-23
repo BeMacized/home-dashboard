@@ -1,11 +1,9 @@
 /* tslint:disable:prefer-const */
 import { Component, ElementRef, HostBinding, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { fade } from '../../utils/animations';
-import { Observable, Subscription } from 'rxjs';
-import { filter, map, take } from 'rxjs/operators';
-import { DomSanitizer } from '@angular/platform-browser';
+import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import { EntityOverlayService } from '../../services/entity-overlay.service';
-import { animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
     selector: 'app-entity-overlay',
@@ -18,6 +16,8 @@ export class EntityOverlayComponent implements OnInit, OnDestroy {
         return this.open ? 'auto' : 'none';
     }
 
+    @HostBinding('style.display') displayStyle = 'none';
+
     @ViewChild('controlContainer') controlContainer;
     mouseDown = false;
 
@@ -28,7 +28,7 @@ export class EntityOverlayComponent implements OnInit, OnDestroy {
     openSubscription: Subscription;
     entitySubscription: Subscription;
 
-    constructor(private el: ElementRef, public entityOverlay: EntityOverlayService, private sanitizer: DomSanitizer) {}
+    constructor(private el: ElementRef, public entityOverlay: EntityOverlayService) {}
 
     ngOnInit() {
         this.entitySubscription = this.entityOverlay.entity$.pipe(filter(e => !!e)).subscribe(entity => {
@@ -40,10 +40,16 @@ export class EntityOverlayComponent implements OnInit, OnDestroy {
             .subscribe(open => {
                 this.open = open;
                 if (open) {
+                    this.displayStyle = 'block';
                     this.refreshStyle(false, false);
                     setTimeout(() => this.refreshStyle(true, true));
                 } else {
                     setTimeout(() => this.refreshStyle(true, false));
+                    setTimeout(() => {
+                        if (!this.entityOverlay.showOverlay$.value) {
+                            this.displayStyle = 'none';
+                        }
+                    }, 500);
                 }
             });
     }
