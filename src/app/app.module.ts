@@ -25,6 +25,7 @@ import { ColorEditorComponent } from './views/entity-overlay/light-color/color-e
 import { EntitySectionPageComponent } from './components/entity-section/entity-section-page/entity-section-page.component';
 import { EllipsisModule } from 'ngx-ellipsis';
 import { SwitchToggleComponent } from './views/entity-overlay/switch-toggle/switch-toggle.component';
+import { UpdateNotificationComponent } from './components/update-notification/update-notification.component';
 
 @NgModule({
     declarations: [
@@ -47,6 +48,7 @@ import { SwitchToggleComponent } from './views/entity-overlay/switch-toggle/swit
         ColorEditorComponent,
         EntitySectionPageComponent,
         SwitchToggleComponent,
+        UpdateNotificationComponent,
     ],
     imports: [
         BrowserModule,

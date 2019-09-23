@@ -1,2 +1,3 @@
 <router-outlet></router-outlet>
 <app-entity-overlay></app-entity-overlay>
+<app-update-notification *ngIf="updateMode" [mode]="updateMode" (dismiss)="updateMode = null"></app-update-notification>

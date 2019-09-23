@@ -7,17 +7,17 @@ export function fade(name = 'fade', length = '.15s ease') {
     ]);
 }
 
-export function destroyDelay(length = '.5s', name = 'destroyDelay', childAnimation = '') {
-    return trigger(name, [
-        transition(':enter', [query(childAnimation, animateChild(), { optional: true }), animate(length)]),
-        transition(':leave', [query(childAnimation, animateChild(), { optional: true }), animate(length)]),
-    ]);
-}
-
 export function fadeUp(name = 'fadeUp', length = '.15s ease') {
     return trigger(name, [
         transition(':enter', [style({ opacity: 0, transform: 'translateY(44px)' }), animate(length)]),
         transition(':leave', [animate(length, style({ opacity: 0, transform: 'translateY(44px)' }))]),
+    ]);
+}
+
+export function fadeDown(name = 'fadeDown', length = '.15s ease') {
+    return trigger(name, [
+        transition(':enter', [style({ opacity: 0, transform: 'translateY(-44px)' }), animate(length)]),
+        transition(':leave', [animate(length, style({ opacity: 0, transform: 'translateY(-44px)' }))]),
     ]);
 }
 

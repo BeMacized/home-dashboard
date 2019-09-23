@@ -1,0 +1,42 @@
+@import 'colors.scss';
+@import 'buttons.scss';
+
+:host {
+    $margin: 20px;
+    position: absolute;
+    top: $margin;
+    left: $margin;
+    width: calc(100% - #{$margin * 2});
+    padding: 20px;
+    height: auto;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+}
+
+.content {
+    flex-grow: 1;
+    color: #fff;
+}
+
+.actions {
+    flex-shrink: 0;
+    button {
+        border: none;
+        outline: none;
+        background: none;
+        color: $color-accent;
+        font-weight: bold;
+        border-radius: 4px;
+        padding: 4px 8px;
+
+        &:active {
+            background: rgba(0, 0, 0, 0.5);
+        }
+    }
+}

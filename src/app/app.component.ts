@@ -1,16 +1,34 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HomeAssistantService } from './services/home-assistant.service';
 import { EntityOverlayService } from './services/entity-overlay.service';
+import { SwUpdate } from '@angular/service-worker';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements OnInit {
-    constructor(private hass: HomeAssistantService, public entityOverlay: EntityOverlayService) {}
+export class AppComponent implements OnInit, OnDestroy {
+    updateMode: 'AVAILABLE' | 'ACTIVATED';
+    updateSubscriptions: Subscription[];
+
+    constructor(
+        private hass: HomeAssistantService,
+        public entityOverlay: EntityOverlayService,
+        private swUpdate: SwUpdate
+    ) {}
 
     ngOnInit() {
         this.hass.connect();
+        this.swUpdate.checkForUpdate();
+        this.updateSubscriptions = [
+            this.swUpdate.available.subscribe(e => (this.updateMode = 'AVAILABLE')),
+            this.swUpdate.activated.subscribe(e => (this.updateMode = 'ACTIVATED')),
+        ];
+    }
+
+    ngOnDestroy() {
+        this.updateSubscriptions.forEach(s => s.unsubscribe());
     }
 }
