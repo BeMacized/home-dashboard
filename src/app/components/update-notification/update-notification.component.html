@@ -3,5 +3,5 @@
 </div>
 <div class="actions">
     <button class="btn" (click)="dismiss.emit()">Dismiss</button>
-    <button class="btn" *ngIf="mode === 'AVAILABLE'" (click)="swUpdate.activateUpdate()">Activate</button>
+    <button class="btn" *ngIf="mode === 'AVAILABLE'" (click)="onActivate()">Activate</button>
 </div>

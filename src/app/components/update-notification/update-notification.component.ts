@@ -13,7 +13,7 @@ export class UpdateNotificationComponent implements OnInit {
     @Input() mode: 'AVAILABLE' | 'ACTIVATED';
     @Output() dismiss: EventEmitter<void> = new EventEmitter<void>();
 
-    constructor(public swUpdate: SwUpdate) {}
+    constructor() {}
 
     ngOnInit() {}
 
@@ -26,5 +26,9 @@ export class UpdateNotificationComponent implements OnInit {
             default:
                 return '';
         }
+    }
+
+    onActivate() {
+        window.location.reload();
     }
 }
