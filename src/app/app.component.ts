@@ -22,6 +22,7 @@ export class AppComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.hass.connect();
         this.swUpdate.checkForUpdate();
+        setInterval(() => this.swUpdate.checkForUpdate(), 60000);
         this.updateSubscriptions = [
             this.swUpdate.available.subscribe(e => (this.updateMode = 'AVAILABLE')),
             this.swUpdate.activated.subscribe(e => (this.updateMode = 'ACTIVATED')),
