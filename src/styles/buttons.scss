@@ -12,8 +12,7 @@
     @include noSelect();
 
     cursor: pointer;
-    transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.15s ease,
-        background-color 0.15s ease;
+    transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), all 0.15s ease;
 
     &:hover {
         box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.1);
@@ -40,6 +39,11 @@ $btn-action-bg: #888;
     padding: 4px 20px;
     font-size: 14px;
     border: 2px $btn-action-bg solid;
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: initial;
+    }
 
     &:active {
         background-color: lighten($btn-action-bg, 10%);

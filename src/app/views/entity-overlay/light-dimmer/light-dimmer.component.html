@@ -8,7 +8,7 @@
         class="btn btn-action"
         (click)="entityOverlay.mode$.next('COLOR')"
         *ngIf="showColorModeButton | async"
-        [disabled]="(entityOverlay.entity$ | async)?.state === 'off'"
+        [disabled]="(entityOverlay.entity$ | async)?.state === 'off' || !(brightness$ | async)"
     >
         Colour
     </button>

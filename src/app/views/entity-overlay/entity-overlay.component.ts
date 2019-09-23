@@ -16,7 +16,9 @@ export class EntityOverlayComponent implements OnInit, OnDestroy {
         return this.open ? 'auto' : 'none';
     }
 
-    @HostBinding('style.display') displayStyle = 'none';
+    @HostBinding('style.display') get displayStyle() {
+        return this.display ? 'block' : 'none';
+    }
 
     @ViewChild('controlContainer') controlContainer;
     mouseDown = false;
@@ -24,6 +26,7 @@ export class EntityOverlayComponent implements OnInit, OnDestroy {
     tileElement: Element;
     style: { [p: string]: any } = {};
     open = false;
+    display = false;
 
     openSubscription: Subscription;
     entitySubscription: Subscription;
@@ -40,14 +43,14 @@ export class EntityOverlayComponent implements OnInit, OnDestroy {
             .subscribe(open => {
                 this.open = open;
                 if (open) {
-                    this.displayStyle = 'block';
+                    this.display = true;
                     this.refreshStyle(false, false);
                     setTimeout(() => this.refreshStyle(true, true));
                 } else {
                     setTimeout(() => this.refreshStyle(true, false));
                     setTimeout(() => {
                         if (!this.entityOverlay.showOverlay$.value) {
-                            this.displayStyle = 'none';
+                            this.display = false;
                         }
                     }, 500);
                 }
