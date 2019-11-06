@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
     styleUrls: ['./home-view.component.scss'],
 })
 export class HomeViewComponent implements OnInit {
-    rooms = ['Living Room', 'Bedroom Bodhi', 'Kitchen', 'Hallway'];
+    rooms = ['Living Room', 'Bedroom Bodhi', 'Kitchen', 'Bathroom', 'Hallway'];
     activeRoom = 0;
 
     constructor() {}
